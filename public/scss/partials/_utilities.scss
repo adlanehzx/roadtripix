@@ -1,0 +1,47 @@
+// margin, padding, border-radius
+// .m-1, .m-2..., .m-6
+@use "variables" as v;
+@layer utilities {
+	$increment: 0.25rem;
+	$directions: (
+		t: top,
+		b: bottom,
+		l: left,
+		r: right,
+	);
+	@for $i from 1 through 8 {
+		.m-#{$i} {
+			margin: $i * $increment;
+		}
+		.p-#{$i} {
+			padding: $i * $increment;
+		}
+		.h-#{$i} {
+			height: $i * $increment;
+		}
+		.w-#{$i} {
+			width: $i * $increment;
+		}
+		@each $name, $value in $directions {
+			.m#{$name}-#{$i} {
+				margin-#{$value}: $i * $increment;
+			}
+			.p#{$name}-#{$i} {
+				padding-#{$value}: $i * $increment;
+			}
+		}
+	}
+
+	// classes utilitaires de couleur
+	@each $name, $value in v.$colors {
+		.bg-#{$name} {
+			background-color: var(--#{$name});
+		}
+		.border-#{$name} {
+			border-color: var(--#{$name});
+		}
+		.text-#{$name} {
+			color: var(--#{$name});
+		}
+	}
+}

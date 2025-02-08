@@ -1,3 +1,21 @@
 **/.bash_history
 **/.env
 **/database
+# Dossiers générés par Composer (pour PHP)
+vendor/
+
+# Dossiers générés par npm (pour Vite)
+node_modules/
+dist/
+# Fichiers générés par Docker
+docker-compose.override.yml
+.docker/
+# Dossiers de build de Vite
+/public/assets/css/   
+/public/assets/js/    
+
+# Dossiers de build de scss
+public/css/           
+
+# Vite dev server
+.vite/

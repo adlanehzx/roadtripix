@@ -1,0 +1,37 @@
+@use "../partials/variables" as v;
+@use "../partials/functions" as f;
+//@use "sass:map";
+
+@layer components {
+	.grid {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(12, 1fr); // 12 colonnes ayant la même largeur
+
+		// @media screen and (min-width: map.get(v.$breakpoints, "lg")) {
+		// 	background-color: var(--blue);
+		// }
+
+		@media screen and (min-width: f.screen("lg")) {
+			background-color: var(--blue);
+		}
+
+		[class^="col-"] {
+			grid-column: 1 / -1;
+		}
+		@for $i from 1 through 12 {
+			.col-#{$i} {
+				grid-column: span #{$i};
+			}
+		}
+		@each $name, $value in v.$breakpoints {
+			@media screen and (min-width: #{$value}) {
+				@for $i from 1 through 12 {
+					.col-#{$name}-#{$i} {
+						grid-column: span #{$i};
+					}
+				}
+			}
+		}
+	}
+}

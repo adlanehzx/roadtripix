@@ -1,0 +1,61 @@
+@use "../partials/mixins" as m;
+@use "../partials/functions" as f;
+@layer components {
+	.navbar {
+		background-color: var(--neutral-50);
+		color: var(--neutral-700);
+		padding: f.rem(16) 0;
+		.container {
+			position: relative;
+			@include m.flexbox($direction: column, $align: flex-start);
+			@media (width >= f.screen(md)) {
+				@include m.flexbox($direction: row, $align: center, $gap: f.rem(30));
+			}
+		}
+		a {
+			@include m.resetA;
+		}
+		ul {
+			@include m.resetList;
+			@include m.flexbox(
+				$direction: column,
+				$align: flex-start,
+				$gap: f.rem(8)
+			);
+			flex-grow: 1;
+			overflow: hidden;
+			height: 0;
+			margin-top: 0;
+			transition: all 0.3s;
+			&.active {
+				margin-top: 1rem;
+			}
+			@media (width >= f.screen(md)) {
+				@include m.flexbox(
+					$direction: row,
+					$align: flex-start,
+					$gap: f.rem(10)
+				);
+				height: auto !important; // pour être sûr que cette règle l'emporte sur les styles ajoutés par jsÒ
+				&.active {
+					margin-top: 0;
+				}
+			}
+		}
+		form {
+			display: none;
+			@media (width >= f.screen(lg)) {
+				@include m.flexbox($gap: f.rem(10));
+			}
+		}
+		&__button {
+			position: absolute;
+			top: 0;
+			right: 0;
+			@include m.resetButton;
+			@media (width >= f.screen(md)) {
+				display: none;
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+@mixin resetA {
+	color: inherit;
+	text-decoration: none;
+}
+
+@mixin resetButton {
+	background-color: transparent;
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 0;
+	cursor: pointer;
+}
+
+@mixin resetList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+@mixin flexbox(
+	$direction: null,
+	$wrap: null,
+	$justify: null,
+	$align: null,
+	$gap: null
+) {
+	display: flex;
+	@if ($direction != null) {
+		flex-direction: $direction;
+	}
+	@if ($wrap != null) {
+		flex-wrap: $wrap;
+	}
+	@if ($justify != null) {
+		justify-content: $justify;
+	}
+	@if ($align != null) {
+		align-items: $align;
+	}
+	@if ($gap != null) {
+		gap: $gap;
+	}
+}

@@ -1,0 +1,31 @@
+{
+  "name": "gestion-d-images-php-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"watch": "vite build --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "sass public/scss/style.scss public/css/style.css --no-source-map",
+    "watch-css": "sass --watch public/scss:public/css --no-source-map"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adlanehzx/Gestion-d-images-PHP-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/adlanehzx/Gestion-d-images-PHP-project/issues"
+  },
+  "homepage": "https://github.com/adlanehzx/Gestion-d-images-PHP-project#readme",
+  "devDependencies": {
+    "sass": "^1.84.0",
+    "vite": "^6.1.0"
+  }
+}
