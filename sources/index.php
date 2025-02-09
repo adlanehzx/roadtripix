@@ -1,6 +1,5 @@
 <?php
 
-echo "Helo";
 
 require_once __DIR__ . "/core/Router.php";
 
