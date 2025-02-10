@@ -7,7 +7,12 @@ use PDO;
 
 class GroupPermission extends Model
 {
-    public const GROUP_OWNER = 'owner';
+
+    public const OWNER_PERMISSION_NAME = 'owner';
+    public const MEMBER_PERMISSION_NAME = 'member';
+
+    public const OWNER_PERMISSION_ID = 1;
+    public const MEMBER_PERMISSION_ID = 2;
 
 
     private $id;
@@ -29,6 +34,16 @@ class GroupPermission extends Model
                 'created_at' => $this->createdAt
             ])
             ->execute();
+    }
+
+    public static function ownerPermission(): GroupPermission
+    {
+        return self::findByName(self::OWNER_PERMISSION_NAME);
+    }
+
+    public static function memberPermission(): GroupPermission
+    {
+        return self::findByName(self::MEMBER_PERMISSION_NAME);
     }
 
     public static function findByName(string $name): ?GroupPermission

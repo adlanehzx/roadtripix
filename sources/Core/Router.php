@@ -34,17 +34,31 @@ class Router
   public function start(): void
   {
     $method = $_SERVER["REQUEST_METHOD"];
-    $path = $_SERVER["REQUEST_URI"];
+    $path = rtrim($_SERVER["REQUEST_URI"], '/');
+
+    if (!strlen($path)) {
+      $path = '/';
+    }
 
     foreach ($this->routes as $route) {
-      if ($method === $route["method"] && $path === $route["path"]) {
+      $routePath = preg_replace('/\{[^\}]+\}/', '([^/]+)', $route["path"]);
+      $routePath = str_replace('/', '\/', $routePath);
+      $pattern = '/^' . $routePath . '$/';
+
+      if ($method === $route["method"] && preg_match($pattern, $path, $matches)) {
+        array_shift($matches); // Remove the full match
         $methodName = $route["methodName"];
         $controllerName = $route["controllerName"];
 
         $controller = new $controllerName();
 
-        $controller->$methodName();
+        call_user_func_array([$controller, $methodName], $matches);
+        return;
       }
     }
+
+    // Handle 404 Not Found
+    http_response_code(404);
+    echo "404 Not Found";
   }
 }

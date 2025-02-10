@@ -15,8 +15,9 @@ class User extends Model
   private string $password;
   private string $email;
   private string $country;
-  private $createdAt;
 
+  private array $images = [];
+  private $createdAt;
 
   public function __construct()
   {
@@ -24,28 +25,28 @@ class User extends Model
     $this->tableName = 'users';
   }
 
-  protected function persist()
-  {
-    $queryBuilder = new QueryBuilder();
-    $queryBuilder
-      ->insert($this->tableName, [
-        'username' => $this->username,
-        'first_name' => $this->firstName,
-        'last_name' => $this->lastName,
-        'password' => $this->password,
-        'email' => $this->email,
-        'country' => $this->country,
-        'created_at' => $this->createdAt
-      ])
-      ->execute();
-  }
-
   public function isValidPassword(string $password): bool
   {
     return password_verify($password, $this->password);
   }
 
-  // finds
+  #region getUserGroups and getUserImages
+  public function getUserGroups(): array
+  {
+    $qb = new QueryBuilder();
+    $result = $qb
+      ->select(['users.id AS userId, user_groups.group_id AS groupId'])
+      ->from('users')
+      ->join('user_groups', 'users.id', 'user_groups.user_id', 'INNER')
+      ->where('users.id', $this->getId())
+      ->fetchAll();
+
+    return $result;
+  }
+  #endregion
+
+
+  #region finds
 
   public static function find($id): ?User
   {
@@ -70,6 +71,25 @@ class User extends Model
 
     return $result ? UserFactory::createFromDatabase($result) : null;
   }
+
+  protected function persist()
+  {
+    $queryBuilder = new QueryBuilder();
+    $queryBuilder
+      ->insert($this->tableName, [
+        'username' => $this->username,
+        'first_name' => $this->firstName,
+        'last_name' => $this->lastName,
+        'password' => $this->password,
+        'email' => $this->email,
+        'country' => $this->country,
+        'created_at' => $this->createdAt
+      ])
+      ->execute();
+  }
+  #endregion
+
+  #region Getters and setters
 
   // Getters and setters
   public function getId()
@@ -172,4 +192,7 @@ class User extends Model
 
     return $this;
   }
+
+  #endregion
+
 }

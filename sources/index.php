@@ -7,6 +7,7 @@ use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 use App\Controllers\GroupController;
 use App\Controllers\HomeController;
+use App\Controllers\ImageController;
 use App\Controllers\LogoutController;
 
 require_once __DIR__ . "/autoload.php";
@@ -23,12 +24,18 @@ $router->post("/register", RegisterController::class, 'post');
 
 $router->get('/user', UserController::class);
 
-
 $router->get("/logout", LogoutController::class);
 
-
-$router->get("/groups", GroupController::class);
+// Groups:
+$router->get("/groups/{id}", GroupController::class);
 $router->get("/groups/create", GroupController::class, "create");
+$router->get("/groups", GroupController::class, "all");
 $router->post("/groups", GroupController::class, "store");
+
+
+// Images:
+$router->get("/images/{groupId}/create", ImageController::class, "create");
+$router->get("/images/{groupId}", ImageController::class, "all");
+$router->post("/images/{groupId}", ImageController::class, "store");
 
 $router->start();

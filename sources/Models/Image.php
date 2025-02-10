@@ -10,8 +10,8 @@ class Image extends Model
     private $id;
     private $imageUrl;
     private $description;
-    private $userId;
-    private $groupId;
+    private User $user;
+    private Group $group;
     private $uploadedAt;
 
     public function __construct()
@@ -27,14 +27,14 @@ class Image extends Model
             ->insert($this->tableName, [
                 'image_url' => $this->imageUrl,
                 'description' => $this->description,
-                'user_id' => $this->userId,
-                'group_id' => $this->groupId,
+                'user_id' => $this->user->getId(),
+                'group_id' => $this->group->getId(),
                 'uploaded_at' => $this->uploadedAt
             ])
             ->execute();
     }
 
-    // Getters and setters
+    #region Getters / Setters
     public function getId()
     {
         return $this->id;
@@ -64,26 +64,26 @@ class Image extends Model
         return $this;
     }
 
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId($userId)
+    public function setUser(User $user): Image
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getGroupId()
+    public function getGroup()
     {
-        return $this->groupId;
+        return $this->group;
     }
 
-    public function setGroupId($groupId)
+    public function setGroup(Group $group): Image
     {
-        $this->groupId = $groupId;
+        $this->group = $group;
 
         return $this;
     }
@@ -99,4 +99,5 @@ class Image extends Model
 
         return $this;
     }
+    #endregion
 }
