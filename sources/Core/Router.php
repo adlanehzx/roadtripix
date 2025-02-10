@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 class Router
 {
   private array $routes;
@@ -9,7 +11,7 @@ class Router
     $this->routes = [];
   }
 
-  public function get(string $path, string $controllerName, string $methodName): void
+  public function get(string $path, string $controllerName, string $methodName = 'index'): void
   {
     $this->routes[] = [
       "method" => "GET",
@@ -19,7 +21,7 @@ class Router
     ];
   }
 
-  public function post(string $path, string $controllerName, string $methodName): void
+  public function post(string $path, string $controllerName, string $methodName = 'index'): void
   {
     $this->routes[] = [
       "method" => "POST",
@@ -39,7 +41,9 @@ class Router
         $methodName = $route["methodName"];
         $controllerName = $route["controllerName"];
 
-        $controllerName::$methodName();
+        $controller = new $controllerName();
+
+        $controller->$methodName();
       }
     }
   }

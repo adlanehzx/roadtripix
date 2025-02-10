@@ -79,3 +79,16 @@ services:
       MARIADB_DATABASE: $DATABASE_NAME
     volumes:
       - ./database:/var/lib/mysql
+  phpmyadmin:
+    container_name: phpmyadmin
+    restart: unless-stopped
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: $DATABASE_USER
+      PMA_PASSWORD: $DATABASE_PASSWORD
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
