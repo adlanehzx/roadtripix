@@ -2,16 +2,15 @@
 
 namespace App\Requests;
 
-class GroupRequest extends Request
+class UserRequest extends Request
 {
-    public $name;
+    public $ids;
     public ?string $_method = null;
 
     public function __construct()
     {
         parent::__construct();
-        $this->name = $this->data['name'] ?? null;
-        $this->_method = $this->data['_method'] ?? null;
+        $this->ids = $this->data['ids'];
     }
 
     public function validate(): bool

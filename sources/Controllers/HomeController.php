@@ -12,7 +12,10 @@ class HomeController extends Controller
     }
     public function index()
     {
-        return $this->render('home/index');
+        $username = Authenticator::user()->getUsername();
+
+        $id = Authenticator::user()->getId();
+        return $this->render('home/index', ['username' => $username, 'userId' => $id]);
     }
 
     public function dashboard()

@@ -34,7 +34,48 @@ class Image extends Model
             ->execute();
     }
 
+    public static function find($id): ?Image
+    {
+        $queryBuilder = new QueryBuilder();
+        $image = $queryBuilder
+            ->select(['*'])
+            ->from('images')
+            ->where('id', $id)
+            ->fetch();
+
+        if (empty($image)) {
+            return null;
+        }
+
+        return (new Image())
+            ->setId($image['id'])
+            ->setImageUrl($image['image_url'])
+            ->setUser(User::find($image['user_id']))
+            ->setGroup(Group::find($image['group_id']))
+            ->setUploadedAt($image['uploaded_at'])
+        ;
+    }
+
+    public function delete(): void
+    {
+        $qb = new QueryBuilder();
+
+        $qb
+            ->delete('images')
+            ->where('id', $this->id)
+        ;
+
+        $qb->execute();
+    }
+
     #region Getters / Setters
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId()
     {
         return $this->id;

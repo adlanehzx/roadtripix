@@ -10,10 +10,7 @@ abstract class Model
     protected static $db;
     protected $tableName;
 
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public static function setDb(PDO $db)
     {

@@ -31,6 +31,16 @@ class Router
     ];
   }
 
+  public function delete(string $path, string $controllerName, string $methodName = 'index'): void
+  {
+    $this->routes[] = [
+      "method" => "DELETE",
+      "path" => $path,
+      "controllerName" => $controllerName,
+      "methodName" => $methodName
+    ];
+  }
+
   public function start(): void
   {
     $method = $_SERVER["REQUEST_METHOD"];

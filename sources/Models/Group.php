@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Core\QueryBuilder;
+use App\Services\Factory\UserFactory;
 use PDO;
 
 class Group extends Model
 {
-    private $id;
+    private ?int $id = null;
     private $name;
 
     /**
@@ -19,7 +20,22 @@ class Group extends Model
 
     private $createdAt;
 
-    public function addUserWithPermission(User $user, GroupPermission $permission): void
+
+    public function addOwner(User $user): void
+    {
+        $this->addUserWithPermission($user, GroupPermission::ownerPermission());
+    }
+
+    public function addMember(User $user): void
+    {
+        $this->addUserWithPermission($user, GroupPermission::memberPermission());
+    }
+
+    // TODO: change to add to db directly.
+    // TODO: we check directly wether the user exist in the db, without caring about in-memory users/perms.
+    // TODO: add the method getUserPermissions
+
+    private function addUserWithPermission(User $user, GroupPermission $permission): void
     {
         if (!in_array($user, $this->users)) {
             $this->users[] = $user;
@@ -34,6 +50,7 @@ class Group extends Model
 
     public function getGroupImages(): array
     {
+        // TODO: make it return real Images.
         $qb = new QueryBuilder();
         $result = $qb
             ->select(['images.id'])
@@ -71,7 +88,25 @@ class Group extends Model
             ->setCreatedAt($group['created_at']);
     }
 
-    protected function persist()
+    public function delete()
+    {
+        $qb = new QueryBuilder();
+
+        $qb
+            ->delete('groups')
+            ->where('id', $this->id)
+            ->execute();
+    }
+
+    protected function persist(): void
+    {
+        if ($this->id === null) {
+            $this->freshPersist();
+            return;
+        }
+    }
+
+    private function freshPersist()
     {
         $queryBuilder = new QueryBuilder();
         $insertedGroupId = $queryBuilder
@@ -105,6 +140,33 @@ class Group extends Model
             }
         }
     }
+
+    private function persistUsers()
+    {
+        foreach ($this->users as $user) {
+            $qb = new QueryBuilder();
+            $qb
+                ->insert('user_groups', [
+                    'user_id' => $user->getId(),
+                    'group_id' => $this->getId(),
+                ])
+                ->execute()
+            ;
+            foreach ($this->usersPermissions[$user->getId()] as $permission) {
+                $qb2 = new QueryBuilder();
+                $qb2
+                    ->insert('user_group_permissions', [
+                        'user_id' => $user->getId(),
+                        'group_id' => $this->getId(),
+                        'permission_id' => $permission->getId(),
+                    ])
+                    ->execute()
+                ;
+            }
+        }
+    }
+
+
     #endregion
 
     #region getters setters
@@ -158,6 +220,8 @@ class Group extends Model
     #endregion
 
     #region getters non-generic
+
+    // TODO: tweak -> query the db directly.
     public function getUserPermissions(User $user): array
     {
         return $this->usersPermissions[$user->getId()] ?? [];
@@ -172,5 +236,37 @@ class Group extends Model
         }
         return false;
     }
+
+    public function getOwner(): User
+    {
+        $qb = new QueryBuilder();
+        $result = $qb
+            ->select([
+                'users.id',
+                'users.username',
+                'users.first_name',
+                'users.last_name',
+                'users.password',
+                'users.email',
+                'users.country',
+                'users.created_at',
+            ])
+            ->from('groups g')
+            ->join('user_groups', 'g.id', 'user_groups.group_id')
+            ->join('users', 'users.id', 'user_groups.user_id')
+            ->join('user_group_permissions ugp', 'ugp.group_id', 'g.id')
+            ->where('ugp.permission_id', GroupPermission::OWNER_PERMISSION_ID)
+            ->where('g.id', $this->id)
+            ->fetch();
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $owner = UserFactory::createFromDatabase($result);
+
+        return $owner;
+    }
+
     #endregion
 }

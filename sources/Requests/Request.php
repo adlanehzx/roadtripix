@@ -16,6 +16,7 @@ abstract class Request
         return match ($_SERVER['REQUEST_METHOD']) {
             'POST' => $_POST,
             'GET' => $_GET,
+            'DELETE' => $_GET,
             default => [],
         };
     }

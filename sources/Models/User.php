@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Core\QueryBuilder;
 use App\Services\Factory\UserFactory;
+use ErrorException;
 use PDO;
 
 class User extends Model
 {
-  private int $id;
+  private ?int $id = null;
   private string $username;
   private string $firstName;
   private string $lastName;
@@ -16,7 +17,6 @@ class User extends Model
   private string $email;
   private string $country;
 
-  private array $images = [];
   private $createdAt;
 
   public function __construct()
@@ -24,11 +24,25 @@ class User extends Model
     parent::__construct();
     $this->tableName = 'users';
   }
-
+  #region boolean functions
   public function isValidPassword(string $password): bool
   {
     return password_verify($password, $this->password);
   }
+
+  public function isSame(User $user): bool
+  {
+    return $this->getId() === $user->getId();
+  }
+
+  public function belongsTo(Group $group): bool
+  {
+    return in_array($group->getId(), array_column($this->getUserGroups(), 'groupId'));
+  }
+
+  #endregion
+
+
 
   #region getUserGroups and getUserImages
   public function getUserGroups(): array
@@ -74,6 +88,12 @@ class User extends Model
 
   protected function persist()
   {
+    // TODO: add the same logic in Group
+    if ($this->getId() !== null) {
+      throw new ErrorException('Utilisateur existe déjà en BDD');
+    }
+
+
     $queryBuilder = new QueryBuilder();
     $queryBuilder
       ->insert($this->tableName, [
@@ -92,12 +112,12 @@ class User extends Model
   #region Getters and setters
 
   // Getters and setters
-  public function getId()
+  public function getId(): ?int
   {
     return $this->id;
   }
 
-  public function setId(int $id): User
+  public function setId(?int $id): User
   {
     $this->id = $id;
     return $this;

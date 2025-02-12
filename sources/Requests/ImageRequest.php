@@ -4,6 +4,8 @@ namespace App\Requests;
 
 class ImageRequest extends Request
 {
+    public ?int $id = null;
+    public ?string $_method = null;
     public $name;
     public $image_url;
     public $description;
@@ -14,16 +16,19 @@ class ImageRequest extends Request
     public function __construct()
     {
         parent::__construct();
-        $this->name = $this->data['name'];
-        $this->image_url = $this->data['image_url'];
-        $this->description = $this->data['description'];
-        $this->user_id = $this->data['user_id'];
-        $this->group_id = $this->data['group_id'];
-        $this->uploaded_at = $this->data['uploaded_at'];
+        $this->id = $this->data['id'] ?? null;
+        $this->_method = $this->data['_method'] ?? null;
+        $this->name = $this->data['name'] ?? null;
+        $this->image_url = $this->data['image_url'] ?? null;
+        $this->description = $this->data['description'] ?? null;
+        $this->group_id = $this->data['group_id'] ?? null;
     }
 
     public function validate(): bool
     {
-        return !empty($this->name) && !empty($this->image_url) && !empty($this->user_id) && !empty($this->group_id);
+        return
+            !empty($this->name)
+            && !empty($this->image_url)
+            && !empty($this->group_id);
     }
 }
