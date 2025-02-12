@@ -1,6 +1,5 @@
 **/.idea
 **/.bash_history
-**/.env
 **/database
 # Dossiers générés par Composer (pour PHP)
 vendor/
