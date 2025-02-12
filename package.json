@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-		"build": "vite build",
-		"preview": "vite preview",
-		"watch": "vite build --watch",
+    "build": "vite build",
+    "preview": "vite preview",
+    "watch": "vite build --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-css": "sass public/scss/style.scss public/css/style.css --no-source-map",
+    "build-css": "sass public/scss/main.scss public/assets/css/style.css --no-source-map",
     "watch-css": "sass --watch public/scss:public/css --no-source-map"
   },
   "repository": {

@@ -9,8 +9,12 @@ use App\Controllers\GroupController;
 use App\Controllers\HomeController;
 use App\Controllers\ImageController;
 use App\Controllers\LogoutController;
+use App\Controllers\invitationController;
+
 
 require_once __DIR__ . "/autoload.php";
+
+
 
 $router = new Router();
 
@@ -27,15 +31,26 @@ $router->get('/user', UserController::class);
 $router->get("/logout", LogoutController::class);
 
 // Groups:
-$router->get("/groups/{id}", GroupController::class);
 $router->get("/groups/create", GroupController::class, "create");
-$router->get("/groups", GroupController::class, "all");
+$router->get("/groups/{id}", GroupController::class);
+$router->get("/groups", GroupController::class, "all"   );
 $router->post("/groups", GroupController::class, "store");
+$router->get("/my_groups", GroupController::class, "allG"); 
+
 
 
 // Images:
 $router->get("/images/{groupId}/create", ImageController::class, "create");
 $router->get("/images/{groupId}", ImageController::class, "all");
 $router->post("/images/{groupId}", ImageController::class, "store");
+
+
+// Invitations :
+$router->get("/invite/{groupId}", invitationController::class , "invite");  
+$router->post("/invitations/send", InvitationController::class, "sendInvitation");
+$router->get("/join-group", InvitationController::class, "acceptInvitation");
+
+
+
 
 $router->start();

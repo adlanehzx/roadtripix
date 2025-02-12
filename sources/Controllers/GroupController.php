@@ -37,8 +37,8 @@ class GroupController extends Controller
   }
 
   public function store()
-  {
-    $request = new GroupRequest();
+    {
+      $request = new GroupRequest();
 
     if (!$request->validate()) {
       return $this->render('groups/create', ['errors' => ['Y a eu une erreur avec les données']]);
@@ -54,4 +54,22 @@ class GroupController extends Controller
 
     return $this->redirect('/groups/create');
   }
+
+  public function allG()
+  {
+      if (!$this->user) {
+          return $this->redirect('/login');  
+      }
+  
+      $groups = Group::findByUserId($this->user->getId());  
+  
+      return $this->render('groups/all', ['groups' => $groups]);
+  }
+  
+
 }
+
+
+
+
+

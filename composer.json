@@ -1,0 +1,10 @@
+{
+  "require": {
+    "resend/resend-php": "^0.15.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "sources/"
+    }
+  }
+}

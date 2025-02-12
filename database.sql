@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -33,17 +32,6 @@ CREATE TABLE `groups` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `groups`
---
-
-INSERT INTO `groups` (`id`, `name`, `created_at`) VALUES
-(4, 'fourth_group', '2025-02-09 23:59:49'),
-(5, 'fourth_group', '2025-02-10 00:00:31'),
-(6, 'fourth_group', '2025-02-10 00:00:35'),
-(7, 'fifth_group', '2025-02-10 00:00:48'),
-(8, 'fifth_group', '2025-02-10 00:01:11');
-
 -- --------------------------------------------------------
 
 --
@@ -55,13 +43,6 @@ CREATE TABLE `group_permissions` (
   `name` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `group_permissions`
---
-
-INSERT INTO `group_permissions` (`id`, `name`, `created_at`) VALUES
-(1, 'owner', '2025-02-09 23:11:52');
 
 -- --------------------------------------------------------
 
@@ -107,17 +88,6 @@ CREATE TABLE `users` (
   `country` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `email`, `password`, `created_at`, `country`) VALUES
-(5, 'ilyes', 'ilyes', 'benameur', 'ilyes@ilyes.com', '$2y$10$d4U/N2LeNogEoU.2gqy0vOZdIellZIlww1WFURNGWboHQDyUe77qW', '2025-02-09 20:37:34', 'fr'),
-(6, 'usernameee', 'username', 'username', 'usernamee@usernameee.com', '$2y$10$d4U/N2LeNogEoU.2gqy0vOZdIellZIlww1WFURNGWboHQDyUe77qW', '2025-02-09 21:23:34', 'fr'),
-(7, 'ilyes', 'ilyes', 'benameur', 'ilyes2@ilyes2.com', '$2y$10$ZPAQm5Urhz5iHlXuvqqtwuDBZZY9zi.lt8B0lSoN2IT.k/pQLloXm', '2025-02-09 21:26:21', 'fr'),
-(8, 'test', 'test', 'test', 'test@test.com', '$2y$10$enyLErAbr3mzU8aewmLLVesXLABzBqKpqMluDa53hnU6Pl/FXXUC6', '2025-02-09 21:39:04', 'test'),
-(10, 'creator', 'creator', 'creation', 'creator@creator.io', '$2y$10$/eEiZzcDpyxBPW/Oepc4T.mZAqtxQ8MpXG2CBuTDNeNfOzuMHMi9.', '2025-02-09 23:42:06', 'fr');
-
 -- --------------------------------------------------------
 
 --
@@ -153,9 +123,27 @@ CREATE TABLE `user_image_permissions` (
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
+-- Table structure for table `invitations`
+--
+
+CREATE TABLE `invitations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `status` enum('pending','accepted','expired') DEFAULT 'pending',
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `invitations_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
 -- Indexes for dumped tables
---
 
 --
 -- Indexes for table `groups`
@@ -212,9 +200,9 @@ ALTER TABLE `user_image_permissions`
   ADD KEY `image_id` (`image_id`),
   ADD KEY `permission_id` (`permission_id`);
 
---
+-- --------------------------------------------------------
+
 -- AUTO_INCREMENT for dumped tables
---
 
 --
 -- AUTO_INCREMENT for table `groups`
@@ -246,9 +234,9 @@ ALTER TABLE `image_permissions`
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
---
+-- --------------------------------------------------------
+
 -- Constraints for dumped tables
---
 
 --
 -- Constraints for table `images`

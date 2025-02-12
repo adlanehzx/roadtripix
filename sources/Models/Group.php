@@ -52,6 +52,28 @@ class Group extends Model
     }
 
     #region find & db invokes
+    public static function findByUserId(int $userId): array
+    {
+        $queryBuilder = new QueryBuilder();
+        $groups = $queryBuilder
+            ->select(['g.*'])
+            ->from('groups g')
+            ->join('user_groups ug', 'g.id', 'ug.group_id')
+            ->where('ug.user_id', $userId)
+            ->fetchAll();
+    
+        $result = [];
+        foreach ($groups as $group) {
+            $result[] = (new self())
+                ->setId($group['id'])
+                ->setName($group['name'])
+                ->setCreatedAt($group['created_at']);
+        }
+    
+        return $result;
+    }
+    
+
     public static function find($id): ?Group
     {
         $queryBuilder = new QueryBuilder();
