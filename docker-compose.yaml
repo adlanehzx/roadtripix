@@ -14,7 +14,7 @@ services:
     working_dir: $PHP_USER_HOME_DIRECTORY
     volumes:
       - ./docker/nginx/templates:/etc/nginx/templates
-      - ./sources:$PHP_USER_HOME_DIRECTORY
+      - ./:$PHP_USER_HOME_DIRECTORY
     ports:
       - $SERVER_PORT:80
 
@@ -37,7 +37,7 @@ services:
     working_dir: $PHP_USER_HOME_DIRECTORY
     user: php
     volumes:
-      - ./sources:$PHP_USER_HOME_DIRECTORY
+      - ./:$PHP_USER_HOME_DIRECTORY
 
   migration:
     container_name: migration
@@ -86,7 +86,7 @@ services:
     environment:
       PMA_HOST: mariadb
       PMA_USER: $DATABASE_USER
-      PMA_PASSWORD: $DATABASE_PASSWORD
+      PMA_PASSWORD: $DATABASE_ROOT_PASSWORD
       PMA_PORT: 3306
     ports:
       - "8080:80"

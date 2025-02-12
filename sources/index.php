@@ -13,6 +13,7 @@ use App\Controllers\invitationController;
 
 
 require_once __DIR__ . "/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 
 
@@ -33,9 +34,9 @@ $router->get("/logout", LogoutController::class);
 // Groups:
 $router->get("/groups/create", GroupController::class, "create");
 $router->get("/groups/{id}", GroupController::class);
-$router->get("/groups", GroupController::class, "all"   );
+$router->get("/groups", GroupController::class, "all");
 $router->post("/groups", GroupController::class, "store");
-$router->get("/my_groups", GroupController::class, "allG"); 
+$router->get("/my_groups", GroupController::class, "allG");
 
 
 
@@ -46,7 +47,7 @@ $router->post("/images/{groupId}", ImageController::class, "store");
 
 
 // Invitations :
-$router->get("/invite/{groupId}", invitationController::class , "invite");  
+$router->get("/invite/{groupId}", invitationController::class, "invite");
 $router->post("/invitations/send", InvitationController::class, "sendInvitation");
 $router->get("/join-group", InvitationController::class, "acceptInvitation");
 
