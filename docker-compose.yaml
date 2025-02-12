@@ -86,7 +86,7 @@ services:
     environment:
       PMA_HOST: mariadb
       PMA_USER: $DATABASE_USER
-      PMA_PASSWORD: $DATABASE_PASSWORD
+      PMA_PASSWORD: $DATABASE_ROOT_PASSWORD
       PMA_PORT: 3306
     ports:
       - "8080:80"
