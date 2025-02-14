@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\Invitation;
 use App\Models\Group;
 use App\Core\Authenticator;
-use Resend\Resend;
+use Resend;
 use App\Requests\InvitationRequest;
 
 class InvitationController extends Controller
@@ -68,7 +68,7 @@ class InvitationController extends Controller
             'to' => $email,
             'subject' => "Invitation à rejoindre le groupe",
             'html' => "
-                <h1>Invitation à rejoindre $groupName</h1>
+                <h1>Invitation à rejoindre </h1>
                 <p>Bonjour,</p>
                 <p>Tu as été invité à rejoindre le groupe .</p>
                 <p><a href='$link' style='padding:10px 20px; background:#007bff; color:white; text-decoration:none; border-radius:5px;'>Rejoindre le groupe</a></p>

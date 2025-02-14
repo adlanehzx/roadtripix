@@ -1,0 +1,23 @@
+@use "variables" as v;
+
+// Définition du thème clair par défaut
+:root {
+  --color-background: #{map-get(map-get(v.$themes, "light"), "background")};
+  --color-text: #{map-get(map-get(v.$themes, "light"), "text")};
+  --color-primary: #{map-get(map-get(v.$themes, "light"), "primary")};
+  --color-secondary: #{map-get(map-get(v.$themes, "light"), "secondary")};
+  --color-accent: #{map-get(map-get(v.$themes, "light"), "accent")};
+  --color-shadow: #{map-get(map-get(v.$themes, "light"), "shadow")};
+  --color-link: #{map-get(map-get(v.$themes, "light"), "link")};
+}
+
+// Mode sombre
+[data-theme="dark"] {
+  --color-background: #{map-get(map-get(v.$themes, "dark"), "background")};
+  --color-text: #{map-get(map-get(v.$themes, "dark"), "text")};
+  --color-primary: #{map-get(map-get(v.$themes, "dark"), "primary")};
+  --color-secondary: #{map-get(map-get(v.$themes, "dark"), "secondary")};
+  --color-accent: #{map-get(map-get(v.$themes, "dark"), "accent")};
+  --color-shadow: #{map-get(map-get(v.$themes, "dark"), "shadow")};
+  --color-link: #{map-get(map-get(v.$themes, "dark"), "link")};
+}

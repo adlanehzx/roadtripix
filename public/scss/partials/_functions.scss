@@ -2,9 +2,11 @@
 @use "sass:map";
 
 @function rem($pxVal) {
-	@return calc($pxVal / 16) * 1rem;
+  @return calc($pxVal / 16) * 1rem;
 }
-
+@function neg-rem($size) {
+  @return #{calc(-$size / 16) * 1rem};
+}
 @function screen($value) {
-	@return map.get(v.$breakpoints, $value);
+  @return map.get(v.$breakpoints, $value);
 }

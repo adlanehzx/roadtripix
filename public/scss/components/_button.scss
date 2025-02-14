@@ -1,44 +1,57 @@
 @use "../partials/functions" as f;
 @use "../partials/mixins" as m;
+
 @layer components {
-	.button {
-		@include m.resetA;
-		@include m.resetButton;
-		padding: f.rem(10) f.rem(16);
-		display: inline-block;
-		background-color: var(--black);
-		color: var(--white);
-		border-radius: f.rem(6);
-		transition: background-color 0.3s;
-		font-weight: 600;
-		&:hover {
-			background-color: var(--black-hover);
-		}
-		// Modifiers
-		&--primary {
-			background-color: var(--blue-500);
-			&:hover {
-				background-color: var(--blue-400);
-			}
-		}
-		&--secondary {
-			background-color: var(--grey-500);
-			&:hover {
-				background-color: var(--grey-400);
-			}
-		}
-		&--danger {
-			background-color: var(--red-500);
-			&:hover {
-				background-color: var(--red-400);
-			}
-		}
-		&--lg {
-			padding: f.rem(16) f.rem(24);
-		}
-		&--sm {
-			padding: f.rem(8) f.rem(12);
-			font-size: f.rem(14);
-		}
-	}
+  .button {
+    @include m.resetA;
+    @include m.resetButton;
+    padding: f.rem(10) f.rem(16);
+    display: inline-block;
+    background-color: var(
+      --color-primary
+    ); // Utilisation de la variable CSS pour le fond
+    color: var(
+      --color-text
+    ); // Utilisation de la variable CSS pour la couleur du texte
+    border-radius: f.rem(6);
+    transition: background-color 0.3s;
+    font-weight: 600;
+
+    &:hover {
+      background-color: var(
+        --color-primary-hover
+      ); // Ajouter un hover dynamique
+    }
+
+    // Modificateurs
+    &--primary {
+      background-color: var(--color-primary);
+      &:hover {
+        background-color: var(--color-primary-hover);
+      }
+    }
+
+    &--secondary {
+      background-color: var(--color-secondary);
+      &:hover {
+        background-color: var(--color-secondary-hover);
+      }
+    }
+
+    &--danger {
+      background-color: var(--color-danger);
+      &:hover {
+        background-color: var(--color-danger-hover);
+      }
+    }
+
+    &--lg {
+      padding: f.rem(16) f.rem(24);
+    }
+
+    &--sm {
+      padding: f.rem(8) f.rem(12);
+      font-size: f.rem(14);
+    }
+  }
 }

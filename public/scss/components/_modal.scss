@@ -1,0 +1,45 @@
+@use "../partials/functions" as f;
+@layer components {
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &__content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: f.rem(8);
+      }
+    }
+
+    &__close {
+      position: absolute;
+      top: f.rem(10);
+      right: f.rem(10);
+      background: transparent;
+      border: none;
+      font-size: f.rem(24);
+      color: var(--white);
+      cursor: pointer;
+    }
+  }
+}

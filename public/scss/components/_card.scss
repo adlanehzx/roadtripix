@@ -1,0 +1,66 @@
+@use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
+@layer components {
+  .card {
+    background-color: var(--white);
+    border-radius: f.rem(12);
+    box-shadow: 0 f.rem(4) f.rem(10) rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.3s;
+
+    &__header {
+      width: 100%;
+      height: f.rem(180);
+      background-size: cover;
+      background-position: center;
+    }
+
+    &__content {
+      padding: f.rem(16);
+      display: flex;
+      flex-direction: column;
+      gap: f.rem(8);
+    }
+
+    &__title {
+      font-size: f.rem(18);
+      font-weight: bold;
+      color: var(--black);
+    }
+
+    &__description {
+      font-size: f.rem(14);
+      color: var(--grey-600);
+    }
+
+    &__actions {
+      margin-top: auto;
+      padding: f.rem(12);
+      border-top: f.rem(1) solid var(--grey-300);
+      display: flex;
+      justify-content: space-between;
+      gap: f.rem(8);
+    }
+
+    // Variantes
+    &--bordered {
+      border: f.rem(2) solid var(--grey-300);
+      box-shadow: none;
+    }
+
+    &--hoverable {
+      &:hover {
+        box-shadow: 0 f.rem(6) f.rem(16) rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    &--glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: f.rem(1) solid rgba(255, 255, 255, 0.2);
+    }
+  }
+}

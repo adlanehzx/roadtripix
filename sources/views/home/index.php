@@ -1,9 +1,6 @@
+<html lang="fr" data-theme="light">
 
 
-<head>
-    <link rel="stylesheet" href="http://localhost:5173/dist/gestion-d-images-php-project.css" />
-    <script src="http://localhost:5173/dist/gestion-d-images-php-project.js"></script>
-  </head>
 
 <?php
 $title = "Accueil";
@@ -30,16 +27,15 @@ include __DIR__ . "/../layout/header.php";
 <?php endif; ?>
 
 
+
     
 
 
 
 
 <?php include __DIR__ . "/../layout/footer.php"; ?>
+</body>
 
-    <section>
-        <h1>.spinner</h1>
-        <div class="spinner"></div>
-        <div class="spinner spinner--purple"></div>
-        <div class="spinner spinner--red spinner--lg"></div>
-    </section>
+
+
+</html>

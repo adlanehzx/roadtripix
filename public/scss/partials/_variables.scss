@@ -1,46 +1,66 @@
 // Colors
 $colors: (
-	"red": #dc3545,
-	"grey": #6c757d,
-	"blue": #0d6efd,
-	"black": black,
-	"white": white,
-	"orange": orange,
-	"purple": #c026d3,
-	"yellow": #f7f023,
-	"green": #09cb2c,
-	"light-grey": #fafafa,
+  "red": #dc3545,
+  "grey": #6c757d,
+  "blue": #0d6efd,
+  "black": black,
+  "white": white,
+  "orange": orange,
+  "purple": #c026d3,
+  "yellow": #f7f023,
+  "green": #09cb2c,
+  "light-grey": #fafafa,
 
-	"primary": #0d6efd,
-	"secondary": #6c757d,
-	"accent": #dc3545,
-	"text-color": #3f3f46,
-	"shadow-color": rgba(0, 0, 0, 0.1),
-	// pour l'exo...
-	"neutral": #f8f9fa,
+  "primary": #0d6efd,
+  "secondary": #6c757d,
+  "accent": #dc3545,
+  "text-color": #3f3f46,
+  "shadow-color": rgba(0, 0, 0, 0.1),
+  // pour l'exo...
+  "neutral": #f8f9fa,
 );
 
 $shades: (
-	950: 8%,
-	900: 16%,
-	800: 24%,
-	700: 32%,
-	600: 40%,
-	500: 48%,
-	400: 56%,
-	300: 64%,
-	200: 73%,
-	100: 82%,
-	50: 92%,
+  950: 8%,
+  900: 16%,
+  800: 24%,
+  700: 32%,
+  600: 40%,
+  500: 48%,
+  400: 56%,
+  300: 64%,
+  200: 73%,
+  100: 82%,
+  50: 92%,
 );
 
 // Breakpoints
 $breakpoints: (
-	"sm": 576px,
-	"md": 768px,
-	"lg": 992px,
-	"xl": 1200px,
-	"xxl": 1400px,
+  "sm": 576px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px,
+  "xxl": 1400px,
 );
 
-$themes: ();
+// ** Couleurs pour le mode clair et sombre **
+$themes: (
+  "light": (
+    "background": #ffffff,
+    "text": #333333,
+    "primary": #0d6efd,
+    "secondary": #6c757d,
+    "accent": #dc3545,
+    "shadow": rgba(0, 0, 0, 0.1),
+    "link": #007bff,
+  ),
+  "dark": (
+    "background": #121212,
+    "text": #ffffff,
+    "primary": #1e90ff,
+    "secondary": #bbbbbb,
+    "accent": #ff4757,
+    "shadow": rgba(255, 255, 255, 0.1),
+    "link": #1e90ff,
+  ),
+);
