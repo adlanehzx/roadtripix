@@ -7,23 +7,16 @@
     @include m.resetButton;
     padding: f.rem(10) f.rem(16);
     display: inline-block;
-    background-color: var(
-      --color-primary
-    ); // Utilisation de la variable CSS pour le fond
-    color: var(
-      --color-text
-    ); // Utilisation de la variable CSS pour la couleur du texte
+    background-color: var(--color-primary);
+    color: var(--color-text);
     border-radius: f.rem(6);
     transition: background-color 0.3s;
     font-weight: 600;
 
     &:hover {
-      background-color: var(
-        --color-primary-hover
-      ); // Ajouter un hover dynamique
+      background-color: var(--color-primary-hover);
     }
 
-    // Modificateurs
     &--primary {
       background-color: var(--color-primary);
       &:hover {
