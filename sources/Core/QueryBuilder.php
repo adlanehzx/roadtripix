@@ -8,11 +8,18 @@ class QueryBuilder
 {
     private string $sql;
     private array $parameters;
+    private ?bool $where = false;
 
     public function __construct()
     {
+        $this->reset();
+    }
+
+    private function reset()
+    {
         $this->sql = "";
         $this->parameters = [];
+        $this->where = false;
     }
 
     public function select(array $columns = ['*'])
@@ -29,9 +36,12 @@ class QueryBuilder
 
     public function where(string $columnName, $value)
     {
-        $this->sql .= empty($this->parameters) ? " WHERE " : " AND ";
+        $this->sql .= (!$this->where) ? " WHERE " : " AND ";
         $this->sql .= $columnName . " = ?";
         $this->parameters[] = $value;
+
+        $this->where = true;
+
         return $this;
     }
 
@@ -107,6 +117,8 @@ class QueryBuilder
         $databaseConnection = $this->getConnection();
         $statement = $databaseConnection->prepare($this->sql);
         $statement->execute($this->parameters);
+
+        $this->reset();
 
         return $databaseConnection->lastInsertId();
     }

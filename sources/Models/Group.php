@@ -10,14 +10,6 @@ class Group extends Model
 {
     private ?int $id = null;
     private $name;
-
-    /**
-     * @var User[] 
-     */
-    private array $users = [];
-
-    private array $usersPermissions = []; // user->id => permissions
-
     private $createdAt;
 
 
@@ -31,37 +23,85 @@ class Group extends Model
         $this->addUserWithPermission($user, GroupPermission::memberPermission());
     }
 
-    // TODO: change to add to db directly.
-    // TODO: we check directly wether the user exist in the db, without caring about in-memory users/perms.
-    // TODO: add the method getUserPermissions
-
     private function addUserWithPermission(User $user, GroupPermission $permission): void
     {
-        if (!in_array($user, $this->users)) {
-            $this->users[] = $user;
+        if ($this->userHasPermission($user, $permission)) {
+            return;
         }
 
-        if (!isset($this->usersPermissions[$user->getId()])) {
-            $this->usersPermissions[$user->getId()] = [];
+        $qb = new QueryBuilder();
+        $qb->insert('user_group_permissions', [
+            'user_id' => $user->getId(),
+            'group_id' => $this->getId(),
+            'permission_id' => $permission->getId(),
+        ])
+            ->execute();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getGroupUsers(): array
+    {
+        $qb = new QueryBuilder();
+        $result = $qb->select([
+            'u.id',
+            'u.username',
+            'u.first_name',
+            'u.last_name',
+            'u.password',
+            'u.email',
+            'u.country',
+            'u.created_at'
+        ])
+            ->from('groups g')
+            ->join('user_group_permissions ugp', 'ugp.group_id', 'g.id')
+            ->join('users u', 'ugp.user_id', 'u.id')
+            ->where('g.id', $this->getId())
+            ->fetchAll();
+        $users = [];
+
+        foreach ($result as $data) {
+            $users[] = UserFactory::createFromDatabase($data);
         }
 
-        $this->usersPermissions[$user->getId()][] = $permission;
+        return $users;
     }
 
     public function getGroupImages(): array
     {
-        // TODO: make it return real Images.
         $qb = new QueryBuilder();
         $result = $qb
-            ->select(['images.id'])
-            ->from('groups')
-            ->join('images', 'groups.id', 'images.group_id')
-            ->where('groups.id', $this->getId())
+            ->select([
+                'i.id',
+                'i.image_url',
+                'i.description',
+                'i.user_id',
+                'i.group_id',
+                'i.uploaded_at'
+            ])
+            ->from('images i')
+            ->join('groups g', 'i.group_id', 'g.id')
+            ->where('g.id', $this->getId())
             ->fetchAll();
 
-        return $result;
-    }
+        if (empty($result)) {
+            return [];
+        }
 
+        $images = [];
+        foreach ($result as $data) {
+            $images[] = (new Image())
+                ->setId($data['id'])
+                ->setImageUrl($data['image_url'])
+                ->setDescription($data['description'])
+                ->setUser(User::find($data['user_id']))
+                ->setGroup($this)
+                ->setUploadedAt($data['uploaded_at']);
+        }
+
+        return $images;
+    }
     public function __construct()
     {
         parent::__construct();
@@ -104,12 +144,15 @@ class Group extends Model
             $this->freshPersist();
             return;
         }
+
+        $this->updatePersist();
     }
 
-    private function freshPersist()
+    private function freshPersist(): bool
     {
-        $queryBuilder = new QueryBuilder();
-        $insertedGroupId = $queryBuilder
+        $qb = new QueryBuilder();
+
+        $insertedGroupId = $qb
             ->insert('groups', [
                 'name' => $this->name,
                 'created_at' => $this->createdAt
@@ -117,54 +160,23 @@ class Group extends Model
             ->execute();
 
         $this->setId($insertedGroupId);
-
-        foreach ($this->users as $user) {
-            $qb = new QueryBuilder();
-            $qb
-                ->insert('user_groups', [
-                    'user_id' => $user->getId(),
-                    'group_id' => $this->getId(),
-                ])
-                ->execute()
-            ;
-            foreach ($this->usersPermissions[$user->getId()] as $permission) {
-                $qb2 = new QueryBuilder();
-                $qb2
-                    ->insert('user_group_permissions', [
-                        'user_id' => $user->getId(),
-                        'group_id' => $this->getId(),
-                        'permission_id' => $permission->getId(),
-                    ])
-                    ->execute()
-                ;
-            }
-        }
+        return true;
     }
 
-    private function persistUsers()
+    private function updatePersist(): bool
     {
-        foreach ($this->users as $user) {
-            $qb = new QueryBuilder();
-            $qb
-                ->insert('user_groups', [
-                    'user_id' => $user->getId(),
-                    'group_id' => $this->getId(),
-                ])
-                ->execute()
-            ;
-            foreach ($this->usersPermissions[$user->getId()] as $permission) {
-                $qb2 = new QueryBuilder();
-                $qb2
-                    ->insert('user_group_permissions', [
-                        'user_id' => $user->getId(),
-                        'group_id' => $this->getId(),
-                        'permission_id' => $permission->getId(),
-                    ])
-                    ->execute()
-                ;
-            }
-        }
+        $qb = new QueryBuilder();
+
+        $qb
+            ->update('groups', [
+                'name' => $this->name,
+                'created_at' => $this->createdAt
+            ])
+            ->where('id', $this->getId())
+            ->execute();
+        return true;
     }
+
 
 
     #endregion
@@ -195,17 +207,6 @@ class Group extends Model
         return $this;
     }
 
-    public function getUsers(): array
-    {
-        return $this->users;
-    }
-
-    public function setUsers(array $users): Group
-    {
-        $this->users = $users;
-        return $this;
-    }
-
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -222,15 +223,52 @@ class Group extends Model
     #region getters non-generic
 
     // TODO: tweak -> query the db directly.
-    public function getUserPermissions(User $user): array
+    /**
+     * @return null|GroupPermissions[]
+     */
+    public function getUserPermissions(User $user): ?array
     {
-        return $this->usersPermissions[$user->getId()] ?? [];
+        $qb = new QueryBuilder();
+
+        $result = $qb
+            ->select([
+                'gp.id AS permissionId',
+                'gp.name AS permissionName',
+                'gp.created_at AS createdAt',
+            ])
+            ->from('groups g')
+            ->join('user_group_permissions ugp', 'g.id', 'ugp.group_id')
+            ->join('users u', 'u.id', 'ugp.user_id')
+            ->join('group_permissions gp', 'gp.id', 'ugp.permission_id')
+            ->where('g.id', $this->getId())
+            ->where('u.id', $user->getId())
+            ->fetchAll();
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $permissions = [];
+        foreach ($result as $data) {
+            $permissions[] = (new GroupPermission())
+                ->setId($data['permissionId'])
+                ->setPermissionName($data['permissionName'])
+                ->setCreatedAt((new \DateTime($data['createdAt']))->format('Y-m-d H:i:s'));
+        }
+
+        return $permissions;
     }
 
-    public function userHasPermission(User $user, string $permissionName): bool
+    public function userHasPermission(User $user, GroupPermission $permission): bool
     {
-        foreach ($this->getUserPermissions($user) as $permission) {
-            if ($permission->getName() === $permissionName) {
+        $userPermissions = $this->getUserPermissions($user);
+
+        if (empty($userPermissions)) {
+            return false;
+        }
+
+        foreach ($userPermissions as $userPermission) {
+            if ($userPermission->isSame($permission)) {
                 return true;
             }
         }
@@ -242,21 +280,20 @@ class Group extends Model
         $qb = new QueryBuilder();
         $result = $qb
             ->select([
-                'users.id',
-                'users.username',
-                'users.first_name',
-                'users.last_name',
-                'users.password',
-                'users.email',
-                'users.country',
-                'users.created_at',
+                'u.id',
+                'u.username',
+                'u.first_name',
+                'u.last_name',
+                'u.password',
+                'u.email',
+                'u.country',
+                'u.created_at',
             ])
-            ->from('groups g')
-            ->join('user_groups', 'g.id', 'user_groups.group_id')
-            ->join('users', 'users.id', 'user_groups.user_id')
-            ->join('user_group_permissions ugp', 'ugp.group_id', 'g.id')
+            ->from('users u')
+            ->join('user_group_permissions ugp', 'ugp.user_id', 'u.id')
+            ->join('groups g', 'g.id', 'ugp.group_id')
             ->where('ugp.permission_id', GroupPermission::OWNER_PERMISSION_ID)
-            ->where('g.id', $this->id)
+            ->where('g.id', $this->getId())
             ->fetch();
 
         if (empty($result)) {

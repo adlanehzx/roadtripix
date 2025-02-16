@@ -30,32 +30,98 @@ class User extends Model
     return password_verify($password, $this->password);
   }
 
-  public function isSame(User $user): bool
+  public function isSame(?User $user): bool
   {
-    return $this->getId() === $user->getId();
+    return $this->getId() === $user?->getId();
   }
 
-  public function belongsTo(Group $group): bool
+  public function belongsTo(?Group $group): bool
   {
-    return in_array($group->getId(), array_column($this->getUserGroups(), 'groupId'));
+    if (empty($group)) {
+      return false;
+    }
+
+    foreach ($this->getUserGroups() as $userGroup) {
+      if ($userGroup->getId() === $group->getId()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public function owns(?Group $group): bool
+  {
+    return $this->isSame($group?->getOwner());
   }
 
   #endregion
-
-
-
   #region getUserGroups and getUserImages
+  /**
+   * @return Group[]
+   */
   public function getUserGroups(): array
   {
     $qb = new QueryBuilder();
     $result = $qb
-      ->select(['users.id AS userId, user_groups.group_id AS groupId'])
-      ->from('users')
-      ->join('user_groups', 'users.id', 'user_groups.user_id', 'INNER')
-      ->where('users.id', $this->getId())
+      ->select(['g.id', 'g.name', 'g.created_at'])
+      ->from('users u')
+      ->join('user_group_permissions ugp', 'u.id', 'ugp.user_id', 'INNER')
+      ->join('groups g', 'g.id', 'ugp.group_id')
+      ->where('u.id', $this->getId())
       ->fetchAll();
 
-    return $result;
+    if (empty($result)) {
+      return [];
+    }
+
+    $userGroups = [];
+
+    foreach ($result as $data) {
+      $userGroups[] = (new Group())
+        ->setId($data['id'])
+        ->setName($data['name'])
+        ->setCreatedAt((new \DateTime($data['created_at']))->format('Y-m-d H:i:s'));
+    }
+
+    return $userGroups;
+  }
+
+  /**
+   * @return Images[]
+   */
+  public function getUserImages(): array
+  {
+    $qb = new QueryBuilder();
+    $result = $qb
+      ->select([
+        'i.id',
+        'i.image_url',
+        'i.description',
+        'i.user_id',
+        'i.group_id',
+        'i.uploaded_at',
+      ])
+      ->from('users u')
+      ->join('images i', 'i.user_id', 'u.id')
+      ->where('u.id', $this->id)
+      ->fetchAll();
+
+    if (empty($result)) {
+      return [];
+    }
+
+    $images = [];
+    foreach ($result as $image) {
+      $images[] = (new Image())
+        ->setId($image['id'])
+        ->setImageUrl($image['image_url'])
+        ->setDescription($image['description'])
+        ->setUser($this)
+        ->setGroup(Group::find($image['group_id']))
+        ->setUploadedAt($image['uploaded_at']);
+    }
+
+    return $images;
   }
   #endregion
 
@@ -86,16 +152,20 @@ class User extends Model
     return $result ? UserFactory::createFromDatabase($result) : null;
   }
 
-  protected function persist()
+  protected function persist(): void
   {
-    // TODO: add the same logic in Group
-    if ($this->getId() !== null) {
-      throw new ErrorException('Utilisateur existe déjà en BDD');
+    if ($this->id === null) {
+      $this->freshPersist();
+      return;
     }
 
+    $this->updatePersist();
+  }
 
-    $queryBuilder = new QueryBuilder();
-    $queryBuilder
+  protected function freshPersist(): bool
+  {
+    $qb = new QueryBuilder();
+    $insertedId = $qb
       ->insert($this->tableName, [
         'username' => $this->username,
         'first_name' => $this->firstName,
@@ -106,6 +176,28 @@ class User extends Model
         'created_at' => $this->createdAt
       ])
       ->execute();
+
+    $this->setId($insertedId);
+
+    return true;
+  }
+
+  protected function updatePersist(): bool
+  {
+    $qb = new QueryBuilder();
+    $qb
+      ->update('users', [
+        'username' => $this->username,
+        'first_name' => $this->firstName,
+        'last_name' => $this->lastName,
+        'password' => $this->password,
+        'email' => $this->email,
+        'country' => $this->country,
+        'created_at' => $this->createdAt
+      ])
+      ->where('id', $this->getId())
+      ->execute();
+    return true;
   }
   #endregion
 

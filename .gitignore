@@ -1,9 +1,9 @@
 **/.idea
 **/.bash_history
-**/.env
 **/database
 # Dossiers générés par Composer (pour PHP)
 vendor/
+user_uploads/
 
 # Dossiers générés par npm (pour Vite)
 node_modules/

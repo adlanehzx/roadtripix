@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Core\Router;
 
 use App\Controllers\UserController;
@@ -14,6 +15,10 @@ require_once __DIR__ . "/autoload.php";
 
 $router = new Router();
 
+
+$router->get('/user_uploads/{groupId}/{imageName}', ImageController::class, 'show');
+
+
 $router->get("/", HomeController::class);
 
 $router->get("/login", LoginController::class);
@@ -27,8 +32,11 @@ $router->get('/user', UserController::class);
 $router->get("/logout", LogoutController::class);
 
 // Groups:
-$router->get("/groups/{id}", GroupController::class);
+
+// TODO: problem in orders.. order matters.
+
 $router->get("/groups/create", GroupController::class, "create");
+$router->get("/groups/{groupId}", GroupController::class);
 $router->get("/groups", GroupController::class, "all");
 $router->post("/groups", GroupController::class, "store");
 
@@ -43,10 +51,15 @@ $router->get("/images", ImageController::class);
 $router->get("/images/{groupId}/create", ImageController::class, "create");
 $router->get("/images/{groupId}", ImageController::class, "all");
 $router->post("/images/{groupId}", ImageController::class, "store");
-
+$router->post("/images/{groupId}/upload", ImageController::class, "store");
 
 $router->get("/images/{groupId}/delete/{imageId}", ImageController::class, "deleteForm");
 $router->post("/images/{groupId}/delete/{imageId}", ImageController::class, "remove");
+
+
+
+
+
 
 
 $router->start();

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\GroupPermission;
 use App\Requests\GroupRequest;
 
 use App\Models\Group;
@@ -14,18 +13,26 @@ class GroupController extends Controller
     parent::__construct();
   }
 
-  public function index(int $id)
+  public function index(int $groupId)
   {
-    $group = Group::find($id);
-
-
-    dd($group->getOwner());
+    $group = Group::find($groupId);
 
     if (!$group) {
       return $this->render('errors/404');
     }
 
-    return $this->render('groups/index', ['group' => $group]);
+    if (!$this->user->belongsTo($group)) {
+      return $this->render('errors/404', ['errors' => 'Tu n\'est pas autorisé pour effectuer cette action']);
+    }
+
+    $groupImages = $group->getGroupImages();
+    $groupUsers = $group->getGroupUsers();
+
+    return $this->render('groups/index', [
+      'group' => $group,
+      'groupUsers' => $groupUsers,
+      'groupImages' => $groupImages,
+    ]);
   }
 
   public function all()
@@ -49,11 +56,10 @@ class GroupController extends Controller
 
     $group = (new Group())
       ->setName($request->name)
-      ->setCreatedAt(date('Y-m-d H:i:s'));
-
-    $group->addOwner($this->user);
+      ->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
 
     $group->save();
+    $group->addOwner($this->user);
 
     return $this->redirect('/groups/create');
   }
@@ -66,7 +72,7 @@ class GroupController extends Controller
       return $this->render('errors/404', ['errors' => 'Le groupe n\'exsite pas']);
     }
 
-    if (!$this->user->isSame($group->getOwner())) {
+    if (!$this->user->owns($group)) {
       return $this->render('errors/401', ['errors' => 'Tu n\'est pas autorisé pour effectuer cette action']);
     }
 

@@ -10,11 +10,12 @@ services:
         SERVER_VERSION: $SERVER_VERSION
     tty: true
     stdin_open: true
-    env_file: .env
+    env_file: ./.env
     working_dir: $PHP_USER_HOME_DIRECTORY
     volumes:
+      # - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:$PHP_USER_HOME_DIRECTORY
       - ./docker/nginx/templates:/etc/nginx/templates
-      - ./sources:$PHP_USER_HOME_DIRECTORY
     ports:
       - $SERVER_PORT:80
 
@@ -37,7 +38,7 @@ services:
     working_dir: $PHP_USER_HOME_DIRECTORY
     user: php
     volumes:
-      - ./sources:$PHP_USER_HOME_DIRECTORY
+      - ./:$PHP_USER_HOME_DIRECTORY
 
   migration:
     container_name: migration

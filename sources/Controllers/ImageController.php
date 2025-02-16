@@ -6,15 +6,53 @@ use App\Requests\ImageRequest;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Group;
+use App\Services\FilesService;
 
 class ImageController extends Controller
 {
+    private ?FilesService $filesService = null;
+
     public function __construct()
     {
         parent::__construct();
+        $this->filesService = new FilesService();
     }
 
     public function index(int $groupId) {}
+
+
+
+    public function show(int $groupId, string $imageName)
+    {
+        $group = Group::find($groupId);
+
+        if (!$this->user->belongsTo($group)) {
+            return $this->render('errors/401', ['errors' => 'Tu n\'appartiens pas au groupe']);
+        }
+        $imageId = (int) $this->filesService->getFileNameOnly($imageName);
+
+        $image = Image::find($imageId);
+
+        $filePath = $this->filesService->getImageFileAbsolutePath($image);
+        if (!$filePath) {
+            return $this->render('errors/404', ['errors' => 'La photo n\'existe pas !']);
+        }
+        $mimeType = mime_content_type($filePath);
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: ' . $mimeType);
+        header('Content-Disposition: inline; filename="' . basename($filePath) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filePath));
+
+        ob_clean();
+        flush();
+
+        readfile($filePath);
+        exit;
+    }
 
     public function all(int $groupId)
     {
@@ -45,7 +83,6 @@ class ImageController extends Controller
     public function store(int $groupId)
     {
         $group = Group::find($groupId);
-
         if (!$group) {
             return $this->render('errors/404', ['errors' => 'Le groupe n\'exsite pas']);
         }
@@ -61,34 +98,46 @@ class ImageController extends Controller
         }
 
         $image = new Image();
-
         $image
-            ->setImageUrl($request->image_url)
-            ->setDescription($request->description)
+            ->setDescription($request->image_file['name'])
             ->setUser($this->user)
             ->setGroup($group)
             ->setUploadedAt(date('Y-m-d H:i:s'));
         $image->save();
 
-        dd('image saved');
+        if (
+            !$this->filesService->uploadImage(
+                file: $request->image_file,
+                image: $image
+            )
+        ) {
+            return $this->render('images/create', ['errors' => 'Erreur lors du déplacement de l\'image téléchargée']);
+        }
+        $imageUrl = $this->filesService->getImageUrl($image);
 
-        return $this->redirect('/images');
+        $image->setImageUrl($imageUrl);
+        $image->save();
+
+        return $this->redirect("/images/{$groupId}/create");
     }
-
 
     public function deleteForm(int $groupId, int $imageId)
     {
         $group = Group::find($groupId);
         $image = Image::find($imageId);
 
-        if (!$group || !$image) {
-            return $this->render('errors/404');
+        if (
+            !$group
+            || !$image
+            || !$image?->belongsTo($group)
+        ) {
+            return $this->render('errors/404', ['errors' => 'Le groupe ou la photo n\'exsite pas']);
         }
 
         return $this->render(
             'images/delete',
             [
-                'imageId' => $image->getId(),
+                'image' => $image,
                 'groupId' => $group->getId(),
             ]
         );
@@ -121,6 +170,14 @@ class ImageController extends Controller
             && !$this->user->isSame($groupOwner)
         ) {
             return $this->render('errors/401', ['errors' => 'Vous n\'avez pas la permission de supprimer cette image']);
+        }
+
+        if (
+            !$this->filesService->removeImage(
+                image: $image
+            )
+        ) {
+            return $this->render('/images', ['errors' => 'Une erreur est survenue lors de la suppression de l\'image.']);
         }
 
         $image->delete();

@@ -23,6 +23,8 @@ class LoginController extends Controller
     $request = new LoginRequest();
     $user = User::findOneByEmail(email: $request->email);
 
+    
+
     if (!$user) {
       echo "L'adresse email ou le mot de passe sont incorrects.";
       die();

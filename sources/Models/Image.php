@@ -3,16 +3,17 @@
 namespace App\Models;
 
 use App\Core\QueryBuilder;
+use DateTime;
 use PDO;
 
 class Image extends Model
 {
-    private $id;
+    private ?int $id = null;
     private $imageUrl;
     private $description;
     private User $user;
     private Group $group;
-    private $uploadedAt;
+    private ?string $uploadedAt = null;
 
     public function __construct()
     {
@@ -20,18 +21,57 @@ class Image extends Model
         $this->tableName = 'images';
     }
 
-    protected function persist()
+    protected function persist(): void
     {
-        $queryBuilder = new QueryBuilder();
-        $queryBuilder
-            ->insert($this->tableName, [
-                'image_url' => $this->imageUrl,
-                'description' => $this->description,
-                'user_id' => $this->user->getId(),
-                'group_id' => $this->group->getId(),
-                'uploaded_at' => $this->uploadedAt
+        if ($this->getId() === null) {
+            $this->freshPersist();
+            return;
+        }
+
+        $this->updatePersist();
+    }
+
+    private function freshPersist(): bool
+    {
+        $qb = new QueryBuilder();
+
+        $insertedImageId = $qb
+            ->insert('images', [
+                'image_url' => $this->getImageUrl(),
+                'description' => $this->getDescription(),
+                'user_id' => $this->getUser()->getId(),
+                'group_id' => $this->getGroup()->getId(),
+                'uploaded_at' => $this->getUploadedAt(),
             ])
             ->execute();
+
+        $this->setId($insertedImageId);
+        return true;
+    }
+
+    private function updatePersist(): bool
+    {
+        $qb = new QueryBuilder();
+
+        $qb
+            ->update('images', [
+                'image_url' => $this->getImageUrl(),
+                'description' => $this->getDescription(),
+            ])
+            ->where('id', $this->getId(), true)
+            ->execute();
+
+        return true;
+    }
+
+    public function belongsTo(?Group $group): bool
+    {
+        return $this->getGroup()->getId() === $group?->getId();
+    }
+
+    public function ownedBy(?User $user): bool
+    {
+        return $this->getUser()->getId() === $user?->getId();
     }
 
     public static function find($id): ?Image
@@ -50,6 +90,7 @@ class Image extends Model
         return (new Image())
             ->setId($image['id'])
             ->setImageUrl($image['image_url'])
+            ->setDescription($image['description'])
             ->setUser(User::find($image['user_id']))
             ->setGroup(Group::find($image['group_id']))
             ->setUploadedAt($image['uploaded_at'])
@@ -62,7 +103,7 @@ class Image extends Model
 
         $qb
             ->delete('images')
-            ->where('id', $this->id)
+            ->where('id', $this->getId())
         ;
 
         $qb->execute();
@@ -76,12 +117,12 @@ class Image extends Model
         return $this;
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getImageUrl()
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
@@ -93,19 +134,19 @@ class Image extends Model
         return $this;
     }
 
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription($description)
+    public function setDescription($description): Image
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -117,7 +158,7 @@ class Image extends Model
         return $this;
     }
 
-    public function getGroup()
+    public function getGroup(): ?Group
     {
         return $this->group;
     }
@@ -129,12 +170,12 @@ class Image extends Model
         return $this;
     }
 
-    public function getUploadedAt()
+    public function getUploadedAt(): ?string
     {
         return $this->uploadedAt;
     }
 
-    public function setUploadedAt($uploadedAt)
+    public function setUploadedAt(?string $uploadedAt): Image
     {
         $this->uploadedAt = $uploadedAt;
 

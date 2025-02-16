@@ -29,5 +29,5 @@ function dd(...$vars)
 
 function dump($var)
 {
-    echo htmlspecialchars(var_export($var, true), ENT_QUOTES, 'UTF-8') . PHP_EOL;
+    echo htmlspecialchars(var_export($var, true), ENT_QUOTES, 'UTF-8') . PHP_EOL . "\n";
 }

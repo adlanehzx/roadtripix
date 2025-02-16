@@ -12,6 +12,7 @@ class ImageRequest extends Request
     public $user_id;
     public $group_id;
     public $uploaded_at;
+    public $image_file;
 
     public function __construct()
     {
@@ -22,13 +23,18 @@ class ImageRequest extends Request
         $this->image_url = $this->data['image_url'] ?? null;
         $this->description = $this->data['description'] ?? null;
         $this->group_id = $this->data['group_id'] ?? null;
+        $this->image_file = $_FILES['image_file'] ?? null;
     }
 
     public function validate(): bool
     {
         return
-            !empty($this->name)
-            && !empty($this->image_url)
-            && !empty($this->group_id);
+            !empty($this->group_id)
+            && $this->validateFile();
+    }
+
+    protected function validateFile(): bool
+    {
+        return isset($this->image_file) && $this->image_file['error'] === UPLOAD_ERR_OK;
     }
 }

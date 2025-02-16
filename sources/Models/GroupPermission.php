@@ -25,6 +25,11 @@ class GroupPermission extends Model
         $this->tableName = 'group_permissions';
     }
 
+    public function isSame(GroupPermission $permission): bool
+    {
+        return $this->getId() === $permission->getId();
+    }
+
     protected function persist(): void
     {
         $queryBuilder = new QueryBuilder();
