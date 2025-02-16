@@ -15,6 +15,11 @@ server {
     fastcgi_param PATH_INFO $fastcgi_path_info;
   }
 
+  location /dist {
+    root ${PHP_USER_HOME_DIRECTORY};
+    try_files $uri =404;
+  }
+
   location / {
     try_files $uri $uri/ /index.php;
   }

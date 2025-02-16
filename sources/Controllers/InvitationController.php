@@ -38,7 +38,7 @@ class InvitationController extends Controller
             $data = InvitationRequest::getSendInvitationData();
             $groupId = $data['group_id'];
             $email = $data['email'];
-            
+
 
             $group = Group::find($groupId);
 
