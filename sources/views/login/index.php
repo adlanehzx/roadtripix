@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="fr">
-=======
-<?php
-require_once __DIR__ . '/../base.php';
-?>
->>>>>>> 89b6c57c4cdc193027d3ae22987433fb97290f84
 
 <?php
 $title = "Login";
