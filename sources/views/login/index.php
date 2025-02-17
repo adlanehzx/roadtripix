@@ -1,10 +1,6 @@
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Login</title>
-</head>
+<?php
+require_once __DIR__ . '/../base.php';
+?>
 
 <body>
     <form action="/login" method="POST">
@@ -30,6 +26,13 @@
 
         <button type="submit">Login</button>
     </form>
+
+    <div id="dropzone" class="dropzone">
+        <div class="dropzone__text">Glissez-déposez un fichier ici ou cliquez pour sélectionner</div>
+        <input type="file" id="fileInput" hidden>
+    </div>
+
+
 </body>
 
 </html>

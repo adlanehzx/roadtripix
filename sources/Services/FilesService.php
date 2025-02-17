@@ -36,16 +36,7 @@ class FilesService
         if (empty($image)) {
             return null;
         }
-
-        $extension = '.' . pathinfo($image->getDescription(), PATHINFO_EXTENSION);
-
-        return
-            $_ENV['PHP_USER_HOME_DIRECTORY']
-            . "/user_uploads/"
-            . $image->getGroup()->getId()
-            . '/'
-            . $image->getId()
-            . $extension;
+        return $_ENV['PHP_USER_HOME_DIRECTORY'] . "/user_images/user_uploads/" . $image->getGroup()->getId() . '/' . $image->getId();
     }
 
     public function getImageDirectoryAbsolutePath(?Image $image): ?string
@@ -59,14 +50,6 @@ class FilesService
     public function getImageUrl(Image $image): string
     {
         $extension = pathinfo($image->getDescription(), PATHINFO_EXTENSION);
-        return "/user_uploads/{$image->getGroup()->getId()}/{$image->getId()}." . $extension;
-    }
-
-    public function getFileNameOnly(?string $filename): ?string
-    {
-        if (empty($filename)) {
-            return null;
-        }
-        return pathinfo($filename, PATHINFO_FILENAME);
+        return "/user_images/user_uploads/{$image->getGroup()->getId()}/{$image->getId()}." . $extension;
     }
 }

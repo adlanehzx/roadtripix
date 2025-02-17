@@ -20,40 +20,6 @@ class ImageController extends Controller
 
     public function index(int $groupId) {}
 
-
-
-    public function show(int $groupId, string $imageName)
-    {
-        $group = Group::find($groupId);
-
-        if (!$this->user->belongsTo($group)) {
-            return $this->render('errors/401', ['errors' => 'Tu n\'appartiens pas au groupe']);
-        }
-        $imageId = (int) $this->filesService->getFileNameOnly($imageName);
-
-        $image = Image::find($imageId);
-
-        $filePath = $this->filesService->getImageFileAbsolutePath($image);
-        if (!$filePath) {
-            return $this->render('errors/404', ['errors' => 'La photo n\'existe pas !']);
-        }
-        $mimeType = mime_content_type($filePath);
-
-        header('Content-Description: File Transfer');
-        header('Content-Type: ' . $mimeType);
-        header('Content-Disposition: inline; filename="' . basename($filePath) . '"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filePath));
-
-        ob_clean();
-        flush();
-
-        readfile($filePath);
-        exit;
-    }
-
     public function all(int $groupId)
     {
         $group = Group::find($groupId);
@@ -113,6 +79,8 @@ class ImageController extends Controller
         ) {
             return $this->render('images/create', ['errors' => 'Erreur lors du déplacement de l\'image téléchargée']);
         }
+
+        // TODO: REPLACE ALL IMAGEURLS WITH IMAGE_FILE_NAME
         $imageUrl = $this->filesService->getImageUrl($image);
 
         $image->setImageUrl($imageUrl);

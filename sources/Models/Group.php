@@ -74,7 +74,7 @@ class Group extends Model
         $result = $qb
             ->select([
                 'i.id',
-                'i.image_url',
+                'i.image_file_name',
                 'i.description',
                 'i.user_id',
                 'i.group_id',
@@ -93,7 +93,7 @@ class Group extends Model
         foreach ($result as $data) {
             $images[] = (new Image())
                 ->setId($data['id'])
-                ->setImageUrl($data['image_url'])
+                ->setImageFileName($data['image_file_name'])
                 ->setDescription($data['description'])
                 ->setUser(User::find($data['user_id']))
                 ->setGroup($this)
@@ -102,6 +102,7 @@ class Group extends Model
 
         return $images;
     }
+
     public function __construct()
     {
         parent::__construct();

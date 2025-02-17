@@ -37,7 +37,7 @@ class Image extends Model
 
         $insertedImageId = $qb
             ->insert('images', [
-                'image_url' => $this->getImageUrl(),
+                'image_file_name' => $this->getImageUrl(),
                 'description' => $this->getDescription(),
                 'user_id' => $this->getUser()->getId(),
                 'group_id' => $this->getGroup()->getId(),
@@ -55,7 +55,7 @@ class Image extends Model
 
         $qb
             ->update('images', [
-                'image_url' => $this->getImageUrl(),
+                'image_file_name' => $this->getImageUrl(),
                 'description' => $this->getDescription(),
             ])
             ->where('id', $this->getId(), true)
@@ -89,7 +89,7 @@ class Image extends Model
 
         return (new Image())
             ->setId($image['id'])
-            ->setImageUrl($image['image_url'])
+            ->setImageUrl($image['image_file_name'])
             ->setDescription($image['description'])
             ->setUser(User::find($image['user_id']))
             ->setGroup(Group::find($image['group_id']))
