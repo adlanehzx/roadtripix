@@ -1,0 +1,63 @@
+@use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
+@layer components {
+  .input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: f.rem(320);
+    margin-bottom: f.rem(16);
+  }
+
+  .input {
+    width: 100%;
+    padding: f.rem(12) f.rem(16);
+    border: f.rem(2) solid var(--grey-400);
+    border-radius: f.rem(8);
+    background-color: var(--white);
+    color: var(--black);
+    font-size: f.rem(16);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+
+    &::placeholder {
+      color: var(--grey-500);
+    }
+
+    &:focus {
+      border-color: var(--blue-500);
+      box-shadow: 0 0 f.rem(6) rgba(0, 123, 255, 0.2);
+    }
+
+    &--error {
+      border-color: var(--red-500);
+    }
+
+    &--success {
+      border-color: var(--green-500);
+    }
+
+    &--lg {
+      padding: f.rem(16) f.rem(20);
+      font-size: f.rem(18);
+    }
+
+    &--sm {
+      padding: f.rem(8) f.rem(12);
+      font-size: f.rem(14);
+    }
+
+    &--rounded {
+      border-radius: f.rem(24);
+    }
+
+    &--borderless {
+      border: none;
+      background-color: var(--grey-100);
+      &:focus {
+        background-color: var(--white);
+      }
+    }
+  }
+}
