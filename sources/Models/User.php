@@ -67,7 +67,7 @@ class User extends Model
       ->from('users u')
       ->join('user_group_permissions ugp', 'u.id', 'ugp.user_id', 'INNER')
       ->join('groups g', 'g.id', 'ugp.group_id')
-      ->where('u.id', $this->getId())
+      ->where('u.id', (int) $this->getId())
       ->fetchAll();
 
     if (empty($result)) {
@@ -103,7 +103,7 @@ class User extends Model
       ])
       ->from('users u')
       ->join('images i', 'i.user_id', 'u.id')
-      ->where('u.id', $this->id)
+      ->where('u.id', (int) $this->id)
       ->fetchAll();
 
     if (empty($result)) {

@@ -91,7 +91,11 @@ class QueryBuilder
 
     private function getConnection(): PDO
     {
-        return new PDO("mysql:host=mariadb;dbname=database", "user", "password");
+        return new PDO(
+            "mysql:host=mysql;dbname=" . $_ENV['DATABASE_NAME'],
+            $_ENV['DATABASE_USER'],
+            $_ENV['DATABASE_PASSWORD'],
+        );
     }
 
     public function fetch()

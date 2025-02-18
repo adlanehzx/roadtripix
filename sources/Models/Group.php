@@ -241,8 +241,8 @@ class Group extends Model
             ->join('user_group_permissions ugp', 'g.id', 'ugp.group_id')
             ->join('users u', 'u.id', 'ugp.user_id')
             ->join('group_permissions gp', 'gp.id', 'ugp.permission_id')
-            ->where('g.id', $this->getId())
-            ->where('u.id', $user->getId())
+            ->where('g.id', (int) $this->getId())
+            ->where('u.id', (int) $user->getId())
             ->fetchAll();
 
         if (empty($result)) {

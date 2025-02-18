@@ -23,7 +23,7 @@ services:
     container_name: php
     restart: unless-stopped
     depends_on:
-      - mariadb
+      - mysql
     build:
       context: docker/php
       args:
@@ -44,7 +44,7 @@ services:
     container_name: migration
     restart: unless-stopped
     depends_on:
-      - mariadb
+      - mysql
     build:
       context: docker/php
       args:
@@ -61,11 +61,11 @@ services:
     volumes:
       - ./db:$PHP_USER_HOME_DIRECTORY
 
-  mariadb:
-    container_name: mariadb
+  mysql:
+    container_name: mysql
     restart: unless-stopped
     build:
-      context: docker/mariadb
+      context: docker/mysql
       args:
         DATABASE_VERSION: $DATABASE_VERSION
     tty: true
@@ -74,22 +74,23 @@ services:
     env_file: .env
     working_dir: /var/lib/mysql
     environment:
-      MARIADB_ROOT_PASSWORD: $DATABASE_ROOT_PASSWORD
-      MARIADB_USER: $DATABASE_USER
-      MARIADB_PASSWORD: $DATABASE_PASSWORD
-      MARIADB_DATABASE: $DATABASE_NAME
+      MYSQL_ROOT_PASSWORD: $DATABASE_ROOT_PASSWORD
+      MYSQL_USER: $DATABASE_USER
+      MYSQL_PASSWORD: $DATABASE_PASSWORD
+      MYSQL_DATABASE: $DATABASE_NAME
     volumes:
       - ./database:/var/lib/mysql
+
   phpmyadmin:
     container_name: phpmyadmin
     restart: unless-stopped
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOST: mariadb
+      PMA_HOST: mysql
       PMA_USER: $DATABASE_USER
       PMA_PASSWORD: $DATABASE_ROOT_PASSWORD
       PMA_PORT: 3306
     ports:
       - "8080:80"
     depends_on:
-      - mariadb
+      - mysql
