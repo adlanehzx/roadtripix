@@ -9,11 +9,16 @@ use PDO;
 class Image extends Model
 {
     private ?int $id = null;
-    private $imageUrl;
     private $description;
     private User $user;
     private Group $group;
     private ?string $uploadedAt = null;
+
+    public function getImageUrl(): ?string
+    {
+        $extension = pathinfo($this->getDescription(), PATHINFO_EXTENSION);
+        return "/user_uploads/{$this->getGroup()->getId()}/{$this->getId()}." . $extension;
+    }
 
     public function __construct()
     {
@@ -37,7 +42,6 @@ class Image extends Model
 
         $insertedImageId = $qb
             ->insert('images', [
-                'image_file_name' => $this->getImageUrl(),
                 'description' => $this->getDescription(),
                 'user_id' => $this->getUser()->getId(),
                 'group_id' => $this->getGroup()->getId(),
@@ -55,10 +59,11 @@ class Image extends Model
 
         $qb
             ->update('images', [
-                'image_file_name' => $this->getImageUrl(),
                 'description' => $this->getDescription(),
+                'user_id' => $this->getUser()->getId(),
+                'group_id' => $this->getGroup()->getId(),
             ])
-            ->where('id', $this->getId(), true)
+            ->where('id', $this->getId())
             ->execute();
 
         return true;
@@ -89,7 +94,6 @@ class Image extends Model
 
         return (new Image())
             ->setId($image['id'])
-            ->setImageUrl($image['image_file_name'])
             ->setDescription($image['description'])
             ->setUser(User::find($image['user_id']))
             ->setGroup(Group::find($image['group_id']))
@@ -120,18 +124,6 @@ class Image extends Model
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
     }
 
     public function getDescription(): ?string
