@@ -1,0 +1,40 @@
+@use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
+@layer components {
+  .dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: f.rem(20);
+    border: f.rem(2) dashed var(--grey-500);
+    border-radius: f.rem(8);
+    background-color: var(--grey-100);
+    color: var(--grey-700);
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+
+    &:hover {
+      border-color: var(--blue-500);
+      background-color: var(--grey-200);
+    }
+
+    &--dragging {
+      border-color: var(--blue-500);
+      background-color: var(--blue-50);
+    }
+
+    &__icon {
+      font-size: f.rem(32);
+      margin-bottom: f.rem(10);
+      color: var(--blue-500);
+    }
+
+    &__text {
+      font-size: f.rem(16);
+      font-weight: 500;
+    }
+  }
+}

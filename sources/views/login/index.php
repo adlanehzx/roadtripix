@@ -7,6 +7,8 @@ include __DIR__ . "/../layout/header.php";
 ?>
 <body>
     <main>
+        <div class="container">
+            <h1>Login</h1>
         <form action="/login" method="POST">
             <div class="input-container">
                 <input type="email" id="email" name="email" 
@@ -37,6 +39,7 @@ include __DIR__ . "/../layout/header.php";
 
             <button class="button button--primary button--md" type="submit">Login</button>
         </form>
+        </div>
     </main>
 </body>
 </html>

@@ -3,16 +3,19 @@
 Container component.
 */
 @layer components {
-	.container {
-		margin: 0 2rem;
+  .container {
+    margin: 0 2rem;
+    background-color: var(--grey-700);
+    color: var(--text-color-100);
+    padding: 2rem;
 
-		@each $name, $value in v.$breakpoints {
-			@media screen and (min-width: $value) {
-				@if ($name == "sm") {
-					margin: auto;
-				}
-				max-width: calc($value - 4rem);
-			}
-		}
-	}
+    @each $name, $value in v.$breakpoints {
+      @media screen and (min-width: $value) {
+        @if ($name == "sm") {
+          margin: auto;
+        }
+        max-width: calc($value - 4rem);
+      }
+    }
+  }
 }

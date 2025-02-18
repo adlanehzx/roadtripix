@@ -16,9 +16,9 @@
     }
     // Modifiers
     &--primary {
-      background-color: var(--blue-500);
+      background-color: var(--primary-700);
       &:hover {
-        background-color: var(--blue-400);
+        background-color: var(--primary-300);
       }
     }
     &--secondary {

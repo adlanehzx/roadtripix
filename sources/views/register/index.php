@@ -8,6 +8,8 @@ include __DIR__ . "/../layout/header.php";
 
 <body>
     <main>
+        <div class="container">
+            <h1>S'inscrire</h1>
         <form action="/register" method="POST">
             <div class="input-container">
                 <input type="text" id="username" name="username"
@@ -107,6 +109,7 @@ include __DIR__ . "/../layout/header.php";
 
             <button class="button button--primary button--md" type="submit">S'inscrire</button>
         </form>
+        </div>
     </main>
 </body>
 </html>

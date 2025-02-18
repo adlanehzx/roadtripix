@@ -2,8 +2,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="dist/gestion-d-images-php-project.css">
-    <script src="dist/gestion-d-images-php-project.mjs" defer></script>
+    <link rel="stylesheet" href="/dist/gestion-d-images-php-project.css">
+    <script src="/dist/gestion-d-images-php-project.mjs" defer></script>
 </head>
 
 <header class="header">
@@ -16,9 +16,6 @@
         <?php if (isset($_SESSION['user_id'])): ?>
           <li>
           <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/my_groups">Groupe</a>
           </li>
           <li>
           <a href="/logout">Logout</a>

@@ -4,58 +4,58 @@
 @use "sass:color";
 
 @layer base {
-	:root {
-		// @each $name, $value in v.$colors {
-		// 	--#{$name}: #{$value};
-		// 	@if ($name != "text-color" and $name != "shadow-color") {
-		// 		--#{$name}-hover: #{color.scale($value, $lightness: 10%)};
-		// 		--#{$name}-transparent: #{color.scale($value, $alpha: -40%)};
-		// 	}
-		// }
+  :root {
+    // @each $name, $value in v.$colors {
+    // 	--#{$name}: #{$value};
+    // 	@if ($name != "text-color" and $name != "shadow-color") {
+    // 		--#{$name}-hover: #{color.scale($value, $lightness: 10%)};
+    // 		--#{$name}-transparent: #{color.scale($value, $alpha: -40%)};
+    // 	}
+    // }
 
-		@each $name, $color in v.$colors {
-			@if ($name == "black" or $name == "white") {
-				--#{$name}: #{color.scale($color, $space: hsl)};
-			} @else {
-				$baseLightness: color.channel($color, "lightness", $space: hsl);
-				$baseHue: color.channel($color, "hue", $space: hsl);
-				$baseSaturation: color.channel($color, "saturation", $space: hsl);
-				@each $shade, $percent in v.$shades {
-					$val: hsl($baseHue $baseSaturation $percent);
-					@if (
-						$percent <= $baseLightness and ($percent + 8%) >= $baseLightness
-					) {
-						$val: hsl(
-							$baseHue $baseSaturation $baseLightness
-						); // conserver la couleur d'entrée
-					}
-					--#{$name}-#{$shade}: #{color.scale($val, $space: hsl)};
-				}
-			}
-		}
+    @each $name, $color in v.$colors {
+      @if ($name == "black" or $name == "white") {
+        --#{$name}: #{color.scale($color, $space: hsl)};
+      } @else {
+        $baseLightness: color.channel($color, "lightness", $space: hsl);
+        $baseHue: color.channel($color, "hue", $space: hsl);
+        $baseSaturation: color.channel($color, "saturation", $space: hsl);
+        @each $shade, $percent in v.$shades {
+          $val: hsl($baseHue $baseSaturation $percent);
+          @if (
+            $percent <= $baseLightness and ($percent + 8%) >= $baseLightness
+          ) {
+            $val: hsl(
+              $baseHue $baseSaturation $baseLightness
+            ); // conserver la couleur d'entrée
+          }
+          --#{$name}-#{$shade}: #{color.scale($val, $space: hsl)};
+        }
+      }
+    }
 
-		// --text-color: var(--neutral);
-		// --body-bg-color: var(--white);
-		// @media screen and (prefers-color-scheme: dark) {
-		// 	--text-color: var(--white);
-		// 	--body-bg-color: var(--neutral);
-		// }
+    // --text-color: var(--neutral);
+    // --body-bg-color: var(--white);
+    // @media screen and (prefers-color-scheme: dark) {
+    // 	--text-color: var(--white);
+    // 	--body-bg-color: var(--neutral);
+    // }
 
-		// &[data-theme="halloween"] {
-		// 	--text-color: var(--black);
-		// 	--body-bg-color: var(--orange);
-		// }
-	}
+    // &[data-theme="halloween"] {
+    // 	--text-color: var(--black);
+    // 	--body-bg-color: var(--orange);
+    // }
+  }
 
-	body {
-		font-family: fonts.$font1;
-		color: var(--text-color);
-		background-color: var(--body-bg-color);
-	}
+  body {
+    font-family: fonts.$font1;
+    color: var(--text-color);
+    background-color: var(--body-bg-color);
+  }
 
-	input {
-		border-radius: f.rem(6);
-		padding: f.rem(10) f.rem(16);
-		border: solid thin currentColor;
-	}
+  input {
+    border-radius: f.rem(6);
+    padding: f.rem(10) f.rem(16);
+    border: solid thin currentColor;
+  }
 }
