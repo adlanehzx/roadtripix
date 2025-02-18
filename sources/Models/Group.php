@@ -74,7 +74,6 @@ class Group extends Model
         $result = $qb
             ->select([
                 'i.id',
-                'i.image_file_name',
                 'i.description',
                 'i.user_id',
                 'i.group_id',
@@ -93,7 +92,6 @@ class Group extends Model
         foreach ($result as $data) {
             $images[] = (new Image())
                 ->setId($data['id'])
-                ->setImageFileName($data['image_file_name'])
                 ->setDescription($data['description'])
                 ->setUser(User::find($data['user_id']))
                 ->setGroup($this)
@@ -223,7 +221,6 @@ class Group extends Model
 
     #region getters non-generic
 
-    // TODO: tweak -> query the db directly.
     /**
      * @return null|GroupPermissions[]
      */

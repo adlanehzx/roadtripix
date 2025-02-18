@@ -25,6 +25,7 @@ class FilesService
     public function removeImage(Image $image): bool
     {
         $imagePath = $image->getImageUrl();
+
         if (file_exists($imagePath)) {
             return unlink($imagePath);
         }
@@ -45,11 +46,5 @@ class FilesService
             return null;
         }
         return $_ENV['PHP_USER_HOME_DIRECTORY'] . '/' . $this->imagesFolderName . "/user_uploads/" . $image->getGroup()->getId();
-    }
-
-    public function getImageUrl(Image $image): string
-    {
-        $extension = pathinfo($image->getDescription(), PATHINFO_EXTENSION);
-        return "/user_images/user_uploads/{$image->getGroup()->getId()}/{$image->getId()}." . $extension;
     }
 }

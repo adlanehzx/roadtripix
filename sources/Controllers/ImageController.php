@@ -80,10 +80,6 @@ class ImageController extends Controller
             return $this->render('images/create', ['errors' => 'Erreur lors du déplacement de l\'image téléchargée']);
         }
 
-        // TODO: REPLACE ALL IMAGEURLS WITH IMAGE_FILE_NAME
-        $imageUrl = $this->filesService->getImageUrl($image);
-
-        $image->setImageUrl($imageUrl);
         $image->save();
 
         return $this->redirect("/images/{$groupId}/create");

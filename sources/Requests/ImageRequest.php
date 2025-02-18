@@ -7,7 +7,6 @@ class ImageRequest extends Request
     public ?int $id = null;
     public ?string $_method = null;
     public $name;
-    public $image_file_name;
     public $description;
     public $user_id;
     public $group_id;
@@ -20,7 +19,6 @@ class ImageRequest extends Request
         $this->id = $this->data['id'] ?? null;
         $this->_method = $this->data['_method'] ?? null;
         $this->name = $this->data['name'] ?? null;
-        $this->image_file_name = $this->data['image_file_name'] ?? null;
         $this->description = $this->data['description'] ?? null;
         $this->group_id = $this->data['group_id'] ?? null;
         $this->image_file = $_FILES['image_file'] ?? null;
