@@ -19,7 +19,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - $SERVER_PORT:80
-
+      - SERVER_PORT_HTTPS:443
   php:
     container_name: php
     restart: unless-stopped
