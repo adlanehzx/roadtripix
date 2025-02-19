@@ -82,7 +82,7 @@ class ImageController extends Controller
 
         $image->save();
 
-        return $this->redirect("/images/{$groupId}/create");
+        return $this->redirect("/group/{$groupId}");
     }
 
     public function deleteForm(int $groupId, int $imageId)
@@ -146,6 +146,6 @@ class ImageController extends Controller
 
         $image->delete();
 
-        return $this->redirect('/');
+        return $this->redirect("/group/{$groupId}");
     }
 }

@@ -19,7 +19,7 @@ include __DIR__ . "/../layout/header.php";
 <h2>Les groupes dont tu es membre :</h2>
 <ul>
     <?php foreach ($groups as $group): ?>
-        <li class="grid">
+        <li class="card card--group-preview">
             Nom : <em><?= htmlspecialchars($group->getName()) ?></em>
             son ID : <em><?= htmlspecialchars($group->getId()) ?></em>
             crée le : <em><?= htmlspecialchars($group->getCreatedAt()) ?></em>

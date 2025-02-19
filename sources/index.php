@@ -10,6 +10,8 @@ use App\Controllers\GroupController;
 use App\Controllers\HomeController;
 use App\Controllers\ImageController;
 use App\Controllers\LogoutController;
+use App\Controllers\ResetPasswordController;
+
 
 require_once __DIR__ . "/autoload.php";
 
@@ -26,6 +28,13 @@ $router->post("/login", LoginController::class, 'post');
 
 $router->get("/register", RegisterController::class);
 $router->post("/register", RegisterController::class, 'post');
+
+$router->get("/reset", ResetPasswordController::class);  
+$router->post("/reset", ResetPasswordController::class, 'post');  
+$router->get("/reset/{token}/{email}", ResetPasswordController::class, 'showResetForm');
+$router->post("/reset/{token}/{email}", ResetPasswordController::class, 'resetPassword');
+
+
 
 $router->get('/user', UserController::class);
 

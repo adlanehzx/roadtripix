@@ -44,6 +44,9 @@ include __DIR__ . "/../layout/header.php";
     <h2><em>Ajouter une images :</em></h2>
     <a class="button button--primary button--md" href="/images/<?= $group->getId() ?>/create">Ajouter une image</a>
 
+    <h2><em>Supprimer le groupe</em></h2>
+    <a class="button button--danger button--md" href="/groups/<?= $group->getId() ?>/delete">Delete</a>
+
     </div>
 </body>
 

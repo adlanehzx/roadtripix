@@ -1,0 +1,56 @@
+@use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
+@layer components {
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &__content {
+      background: var(--white);
+      padding: f.rem(10);
+      border-radius: f.rem(10);
+      max-width: 80%;
+      max-height: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        max-width: 100%;
+        max-height: 80vh;
+        border-radius: f.rem(10);
+      }
+
+      .close {
+        cursor: pointer;
+        font-size: f.rem(16);
+        margin-top: f.rem(10);
+        background: var(--red-500);
+        color: var(--white);
+        padding: f.rem(5) f.rem(10);
+        border-radius: f.rem(5);
+        transition: background-color 0.3s ease-in-out;
+
+        &:hover {
+          background: var(--red-300);
+        }
+      }
+    }
+  }
+}

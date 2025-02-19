@@ -1,7 +1,7 @@
 @use "partials/layers";
 @use "partials/globals";
-
 @use "partials/utilities";
+@use "../../node_modules/modern-normalize/modern-normalize.css";
 
 /**
 Components
@@ -15,3 +15,5 @@ Components
 @use "components/input";
 @use "components/card";
 @use "components/dropzone";
+@use "components/modal";
+@use "components/toast";

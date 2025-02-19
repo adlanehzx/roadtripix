@@ -197,6 +197,15 @@ class User extends Model
       ->execute();
     return true;
   }
+
+  public function updatePassword(string $newPassword): void
+  {
+    $passwordHashed = password_hash($newPassword, PASSWORD_BCRYPT);
+    $this->setPassword($passwordHashed);
+    $this->persist();
+
+    return;
+  }
   #endregion
 
   #region Getters and setters

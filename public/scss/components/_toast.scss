@@ -1,0 +1,43 @@
+@use "../partials/variables" as v;
+@layer components {
+  .toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--grey-700);
+    color: var(--text-color-100);
+    box-shadow: 0 0 10px var(--shadow-color);
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    &.show {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    &__close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      cursor: pointer;
+      color: var(--text-color-100);
+      font-size: 1.5rem;
+    }
+    &--success {
+      background-color: var(--green-100);
+    }
+    &--danger {
+      background-color: var(--red-500);
+    }
+    &--warning {
+      background-color: var(--yellow-500);
+    }
+    &--info {
+      background-color: var(--blue-500);
+    }
+  }
+}
