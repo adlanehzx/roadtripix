@@ -1,7 +1,7 @@
 server {
-  listen 80 default_server;
+  listen 80;
 
-  server_name _;
+  server_name roadtripix.me www.roadtripix;
 
   root ${PHP_USER_HOME_DIRECTORY}/sources;
 
