@@ -1,31 +1,40 @@
 server {
-  listen 80;
+    listen 80;
+    server_name roadtripix.me www.roadtripix.me;
 
-  server_name roadtripix.me www.roadtripix.me;
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
 
-  root ${PHP_USER_HOME_DIRECTORY}/sources;
+server {
+    listen 443 ssl;
+    server_name roadtripix.me www.roadtripix.me;
 
-  index index.php;
+    ssl_certificate /etc/letsencrypt/live/roadtripix.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/roadtripix.me/privkey.pem;
 
-  location ~ \.php$ {
-    fastcgi_pass php:9000;
-    include fastcgi_params;
-    fastcgi_index index.php;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    fastcgi_param PATH_INFO $fastcgi_path_info;
-  }
+    root ${PHP_USER_HOME_DIRECTORY}/sources;
+    index index.php;
 
-  location /dist {
-      root ${PHP_USER_HOME_DIRECTORY};
-      try_files $uri =404;
-  }
+    location ~ \.php$ {
+        fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
 
-  location /user_uploads {
-      root ${PHP_USER_HOME_DIRECTORY};
-      try_files $uri =404;
-  }
+    location /dist {
+        root ${PHP_USER_HOME_DIRECTORY};
+        try_files $uri =404;
+    }
 
-  location / {
-    try_files $uri $uri/ /index.php;
-  }
+    location /user_uploads {
+        root ${PHP_USER_HOME_DIRECTORY};
+        try_files $uri =404;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
 }
