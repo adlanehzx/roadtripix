@@ -12,14 +12,13 @@
       position: relative;
       cursor: pointer;
       width: f.rem(136);
-      height: f.rem(136);
       overflow: hidden;
       border-radius: f.rem(8);
       box-shadow: 0 f.rem(2) f.rem(10) rgba(0, 0, 0, 0.1);
 
       img {
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease-in-out;
       }

@@ -146,6 +146,6 @@ class ImageController extends Controller
 
         $image->delete();
 
-        return $this->redirect("/group/{$groupId}");
+        return $this->redirect("/groups/{$groupId}");
     }
 }

@@ -6,6 +6,12 @@ use App\Services\ResendService;
 
 class ResetPasswordController extends Controller
 {
+
+    public function __construct()
+    {
+        
+    }
+
     public function index()
     {
         return $this->render('reset/index');
@@ -71,10 +77,12 @@ class ResetPasswordController extends Controller
         }
 
      
-        $user = new User();
+        $user = User::findByEmail();
         $user->setEmail($email); 
 
         $user->updatePassword($newPassword);
+        
+        $user->save();
 
 
         unset($_SESSION['reset_token']);
