@@ -10,21 +10,21 @@ class ResendService
 
     public function __construct()
     {
-        $this->client = new Resend("re_3FUqCCDy_A7Tewqsoykv99HaMmXHvHR2m");
+        $this->client = Resend::client('re_XBCxN9Hw_9DdwQ15twuGsJUWrJQDD1uzY');
     }
 
     public function sendEmail($to, $subject, $body)
     {
         try {
-            $response = $this->client->send([
-                'from' => 'contact@roadtripix.me',
-                'to' => $to,
-                'subject' => $subject,
-                'html' => $body,
+            $response = $this->client->emails->send([
+                'from' => 'contact@roadtripix.me',  
+                'to' => [$to],  
+                'subject' => $subject,  
+                'html' => $body,  
             ]);
+            return true;
             
-            return $response;
-        } catch (ResendException $e) {
+        } catch (\Exception $e) {
             echo 'Erreur lors de l\'envoi de l\'email: ' . $e->getMessage();
             return false;
         }

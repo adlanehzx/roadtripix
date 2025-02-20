@@ -4,40 +4,16 @@ include __DIR__ . "/../layout/header.php";
 ?>
 
 <div class="container">
-    
-        <h2>Réinitialisation du mot de passe</h2>
-           <p> Entrez votre adresse mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe.
-        </p>
-
-        <form class="ResetForm" method="POST" action="/reset/reset-form">
-            
-                
-            
+    <h2>Réinitialisation du mot de passe</h2>
+    <form class="ResetForm" method="POST"
+        action="/reset-password/<?= htmlspecialchars($token) ?>/<?= urlencode($email) ?>">
         <div class="input-container">
-                <input type="password" id="password" name="password"
-                       class="input <?= isset($errors['password']) ? 'input--error' : '' ?>"
-                       placeholder="Mot de passe" required>
-            </div>
-            <?php if (!empty($errors['password'])): ?>
-                <ul class="error-messages">
-                    <?php foreach ($errors['password'] as $message): ?>
-                        <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-
-            <div class="input-container">
-                <input type="password" id="passwordConfirm" name="passwordConfirm"
-                       class="input <?= isset($errors['passwordConfirm']) ? 'input--error' : '' ?>"
-                       placeholder="Confirmez le mot de passe" required>
-            </div>
-            <?php if (!empty($errors['passwordConfirm'])): ?>
-                <ul class="error-messages">
-                    <?php foreach ($errors['passwordConfirm'] as $message): ?>
-                        <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-        </form>
-    
+            <input type="password" id="password" name="password" class="input" placeholder="Mot de passe" required>
+        </div>
+        <div class="input-container">
+            <input type="password" id="passwordConfirm" name="passwordConfirm" class="input"
+                placeholder="Confirmez le mot de passe" required>
+        </div>
+        <button type="submit" class="button button--primary button--md">Réinitialiser le mot de passe</button>
+    </form>
 </div>

@@ -200,7 +200,7 @@ class User extends Model
 
   public function updatePassword(string $newPassword): void
   {
-    $this->setPassword($passwordHashed);
+    $this->setPassword($newPassword);
 
     return;
   }
