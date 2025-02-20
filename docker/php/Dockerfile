@@ -10,3 +10,8 @@ ARG PHP_USER_HOME_DIRECTORY=/home/php
 RUN useradd --create-home --system --home-dir $PHP_USER_HOME_DIRECTORY --shell $PHP_USER_SHELL --uid $PHP_USER_IDENTIFIER $PHP_USER_NAME
 
 RUN docker-php-ext-install pdo_mysql
+
+# installing composer
+RUN apt-get update && apt-get install -y curl unzip git
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
