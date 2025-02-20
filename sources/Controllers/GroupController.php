@@ -29,6 +29,7 @@ class GroupController extends Controller
     $groupUsers = $group->getGroupUsers();
 
     return $this->render('groups/index', [
+      'currentUser' => $this->user,
       'group' => $group,
       'groupUsers' => $groupUsers,
       'groupImages' => $groupImages,
@@ -81,24 +82,28 @@ class GroupController extends Controller
 
   public function remove(int $groupId)
   {
-      $request = new GroupRequest();
-  
-      if ($request->_method !== 'delete') {
-          return $this->render('errors/405', ['errors' => 'Méthode non autorisée.']);
-      }
-  
-      $group = Group::find($groupId);
-  
-      if (!$group) {
-          return $this->render('errors/404', ['errors' => 'Le groupe n\'existe pas !']);
-      }
-  
-      if (!$this->user->isSame($group->getOwner())) {
-          return $this->render('errors/401', ['errors' => 'Tu n\'es pas autorisé pour effectuer cette action']);
-      }
-  
-      $group->delete();
-  
-      return $this->redirect('/');
+    $request = new GroupRequest();
+
+    if ($request->_method !== 'delete') {
+      return $this->render('errors/405', ['errors' => 'Méthode non autorisée.']);
+    }
+
+    $group = Group::find($groupId);
+
+    if (!$group) {
+      return $this->render('errors/404', ['errors' => 'Le groupe n\'existe pas !']);
+    }
+
+    if (!$this->user->isSame($group->getOwner())) {
+      return $this->render('errors/401', ['errors' => 'Tu n\'es pas autorisé pour effectuer cette action']);
+    }
+
+    $group->delete();
+
+    return $this->redirect('/');
   }
+
+
+
+  public function groupUsers(int $groupId) {}
 }
