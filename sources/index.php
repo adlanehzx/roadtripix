@@ -56,6 +56,13 @@ $router->post("/groups", GroupController::class, "store");
 $router->get("/groups/{groupId}/delete", GroupController::class, "deleteForm");
 $router->post("/groups/{groupId}/delete", GroupController::class, "remove");
 
+$router->get("/groups/{groupId}/users", GroupController::class, "groupUsers");
+
+$router->post("/groups/{groupId}/users/{userId}/remove", GroupController::class, "removeUserFromGroup");
+
+$router->post('/groups/{groupId}/users/{userId}/giveWrite', GroupController::class, "giveWriteAccess");
+$router->post('/groups/{groupId}/users/{userId}/removeWrite', GroupController::class, "deleteWriteAccess");
+
 // Images:
 // we show all the uploaded images of the user along with their groups (link to the group).
 $router->get("/images", ImageController::class);

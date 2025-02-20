@@ -14,7 +14,16 @@ class UserController extends Controller
         parent::__construct();
     }
 
-    public function index() {}
+    public function index()
+    {
+        $group = Group::find(15);
+
+        $user = User::find(13);
+
+        $group->addWriteAccess($user);
+
+        dd('finished');
+    }
 
     public function appendToGroup(int $groupId, int $userId)
     {

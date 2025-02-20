@@ -22,17 +22,13 @@ include __DIR__ . "/../layout/header.php";
                 <p><strong>Id du groupe: </strong><?= $group->getId() ?></p>
                 <p><strong>Date de création du groupe:</strong> <?= $group->getCreatedAt() ?></p>
             </div>
-            <h2><em>Utilisateurs du groupe :</em></h2>
-            <ul>
-                <?php foreach ($groupUsers as $user): ?>
-                    <li class="card">
-                        <?= $user->getUsername() ?> (<?= $user->getEmail() ?>)
-                        <?php if ($user->owns($group)): ?>
-                            <span title='possède le groupe'>👑</span>
-                        <?php endif; ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+
+            <?php if ($loggedUser->owns($group)): ?>
+                <a
+                    href="/groups/<?= $group->getId() ?>/users"
+                    class="button button--primary button--md">Gérer les utilisateurs 👥⚙️</a>
+            <?php endif; ?>
+
             <h2><em>Les images du groupe :</em></h2>
             <?php if (empty($groupImages)): ?>
                 <p>Aucune image pour le moment.</p>
@@ -56,7 +52,7 @@ include __DIR__ . "/../layout/header.php";
                                 <p id="modalDescription"></p>
                                 <div class="buttons">
                                     <button class="button button--primary close" onclick="closeModal()">Fermer</button>
-                                    <?php if ($image->ownedBy($currentUser) || $currentUser->owns($group)): ?>
+                                    <?php if ($image->ownedBy($loggedUser) || $loggedUser->owns($group)): ?>
                                         <a
                                             id="deleteImageBtn"
                                             class="button button--danger"
@@ -72,15 +68,18 @@ include __DIR__ . "/../layout/header.php";
                 <?php endforeach; ?>
             </div>
 
+            <?php if ($group->userHasWriteAcces($loggedUser)): ?>
+                <h2><em>Ajouter une image :</em></h2>
+                <a class="button button--primary button--md" href="/images/<?= $group->getId() ?>/create">
+                    Ajouter une image
+                </a>
+            <?php endif; ?>
 
 
-            <h2><em>Ajouter une image :</em></h2>
-            <a class="button button--primary button--md" href="/images/<?= $group->getId() ?>/create">Ajouter une
-                image</a>
-
-            <h2><em>Supprimer le groupe</em></h2>
-            <a class="button button--danger button--md" href="/groups/<?= $group->getId() ?>/delete">Delete</a>
-
+            <?php if ($loggedUser->owns($group)): ?>
+                <h2><em>Supprimer le groupe</em></h2>
+                <a class="button button--danger button--md" href="/groups/<?= $group->getId() ?>/delete">Delete</a>
+            <?php endif; ?>
 
 
     </div>

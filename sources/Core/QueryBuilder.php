@@ -84,6 +84,12 @@ class QueryBuilder
         return $this;
     }
 
+    public function groupBy(string $column)
+    {
+        $this->sql .= " GROUP BY " . $column;
+        return $this;
+    }
+
     public function getSql()
     {
         return $this->sql;
