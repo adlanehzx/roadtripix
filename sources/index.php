@@ -14,6 +14,7 @@ use App\Controllers\ResetPasswordController;
 
 
 require_once __DIR__ . "/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 $router = new Router();
 
@@ -29,10 +30,13 @@ $router->post("/login", LoginController::class, 'post');
 $router->get("/register", RegisterController::class);
 $router->post("/register", RegisterController::class, 'post');
 
-$router->get("/reset", ResetPasswordController::class);  
-$router->post("/reset", ResetPasswordController::class, 'post');  
-$router->get("/reset/{token}/{email}", ResetPasswordController::class, 'showResetForm');
-$router->post("/reset/{token}/{email}", ResetPasswordController::class, 'resetPassword');
+$router->get("/reset-password", ResetPasswordController::class, "index");
+$router->post("/reset-password", ResetPasswordController::class, "post");
+$router->get("/reset-password/{token}/{email}", ResetPasswordController::class, "showResetForm");
+$router->post("/reset-password/{token}/{email}", ResetPasswordController::class, "resetPassword");
+$router->get("/reset-password/{token}/{email}", ResetPasswordController::class, "success");
+$router->get("/reset-password/{token}/{email}", ResetPasswordController::class, "error");
+$router->get("/reset-password/{token}/{email}", ResetPasswordController::class, "expired");
 
 
 

@@ -35,7 +35,7 @@ include __DIR__ . "/../layout/header.php";
         <?php endif; ?>
 
         <button class="button button--primary button--md" type="submit">Login</button>
-        <a class="button button--primary button--md" href="/reset">Reset Password</button>
+        <a class="button button--primary button--md" href="/reset-password">Reset Password</button>
 
     </form>
 
