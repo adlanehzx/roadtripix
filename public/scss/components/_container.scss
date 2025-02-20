@@ -8,6 +8,7 @@ Container component.
     background-color: var(--grey-700);
     color: var(--text-color-100);
     padding: 2rem;
+    border-radius: 0.5rem;
 
     @each $name, $value in v.$breakpoints {
       @media screen and (min-width: $value) {

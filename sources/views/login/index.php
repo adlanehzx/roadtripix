@@ -39,6 +39,8 @@ include __DIR__ . "/../layout/header.php";
 
             <button class="button button--primary button--md" type="submit">Login</button>
         </form>
+        <a class="button button--primary button--sm" href="/reset">Reset Password</button>
+
         </div>
     </main>
 </body>

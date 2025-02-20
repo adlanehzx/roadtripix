@@ -7,7 +7,7 @@
     padding: f.rem(10) f.rem(16);
     display: inline-block;
     background-color: var(--black);
-    color: var(--white);
+    color: var(--text-color-100);
     border-radius: f.rem(6);
     transition: background-color 0.3s;
     font-weight: 600;
@@ -30,7 +30,13 @@
     &--danger {
       background-color: var(--red-500);
       &:hover {
-        background-color: var(--red-400);
+        background-color: var(--red-200);
+      }
+    }
+    &--white {
+      background-color: var(--white);
+      &:hover {
+        background-color: var(--grey-400);
       }
     }
     &--lg {

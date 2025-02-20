@@ -3,16 +3,11 @@
 
 @layer components {
   .card {
-    background-color: var(--white);
     border-radius: f.rem(8);
-    box-shadow: 0 f.rem(4) f.rem(10) rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    box-shadow: 0 f.rem(4) f.rem(10) var(--shadow-color);
     transition: box-shadow 0.3s ease-in-out;
     width: f.rem(460);
-
-    &:hover {
-      box-shadow: 0 f.rem(6) f.rem(14) rgba(0, 0, 0, 0.15);
-    }
+    color: var(--text-color-100);
 
     &__header {
       padding: f.rem(16);
@@ -34,9 +29,9 @@
       text-align: right;
     }
 
-    // Modifiers
+    // Modificateurs
     &--shadow-lg {
-      box-shadow: 0 f.rem(8) f.rem(20) rgba(0, 0, 0, 0.2);
+      box-shadow: 0 f.rem(8) f.rem(20) var(--shadow-color);
     }
 
     &--bordered {
@@ -55,6 +50,27 @@
     &--secondary {
       background-color: var(--grey-500);
       color: var(--white);
+    }
+
+    &--group-preview {
+      padding: f.rem(30);
+      background-color: var(--grey-600);
+      width: f.rem(600);
+      margin-bottom: f.rem(30);
+      align-items: center;
+    }
+
+    &--user {
+      padding: f.rem(10);
+      margin: f.rem(8) 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: f.rem(1) solid var(--grey-300);
+      background-color: var(--grey-600);
+    }
+    &:hover {
+      box-shadow: 0 f.rem(6) f.rem(14) rgba(219, 219, 219, 0.15);
     }
   }
 }
