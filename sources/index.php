@@ -7,11 +7,12 @@ use App\Controllers\UserController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 use App\Controllers\GroupController;
+use App\Controllers\GroupInvitationController;
 use App\Controllers\HomeController;
 use App\Controllers\ImageController;
 use App\Controllers\LogoutController;
 use App\Controllers\ResetPasswordController;
-
+use App\Models\GroupInvitation;
 
 require_once __DIR__ . "/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
@@ -78,6 +79,14 @@ $router->post("/images/{groupId}/delete/{imageId}", ImageController::class, "rem
 
 
 
+
+
+// Invitations:
+
+
+$router->get('/invitation/{token}', GroupInvitationController::class, "acceptInvitation");
+$router->get('/invite/{groupId}', GroupInvitationController::class, "prepareInvitation");
+$router->post('/invite/{groupId}', GroupInvitationController::class, "invite");
 
 
 
