@@ -40,10 +40,9 @@ include __DIR__ . "/../layout/header.php";
             <div class="gallery">
                 <?php foreach ($groupImages as $image): ?>
                 <div class="gallery__item"
-                    onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>')">
+                    onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>', '<?= $image->getId() ?>' , '<?= $group->getId() ?>')">
                     <img src="<?= $image->getImageUrl() ?>" alt="<?= $image->getDescription() ?>">
                 </div>
-
 
                 <div id="imageModal" class="modal" onclick="closeModal()">
                     <div class="modal__content" onclick="event.stopPropagation();">
@@ -56,8 +55,7 @@ include __DIR__ . "/../layout/header.php";
                             <p id="modalDescription"></p>
                             <div class="buttons">
                                 <button class="button button--primary close" onclick="closeModal()">Fermer</button>
-                                <a id="deleteImageBtn" class="button button--danger"
-                                    href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
+                                <a id="deleteImageBtn" class="button button--danger" href="#">Supprimer</a>
                                 <button class="button button--primary">Partager</button>
                             </div>
                         </div>
