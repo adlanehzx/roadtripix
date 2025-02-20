@@ -18,6 +18,16 @@ class GroupInvitation extends Model
     private ?\DateTime $expiresAt;
     private ?string $status;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->tableName = 'group_invitations';
+    }
+
+    public function isAccepted(): bool
+    {
+        return $this->status === self::STATUS_ACCEPTED;
+    }
 
     public function isExpired(): bool
     {
@@ -65,7 +75,7 @@ class GroupInvitation extends Model
                 'group_id' => $this->getGroup()->getId(),
                 'user_id' => $this->getUser()->getId(),
                 'token' => $this->getToken(),
-                'expiresAt' => $this->getExpiresAt(),
+                'expires_at' => $this->getExpiresAt()->format('Y-m-d H:i:s'),
                 'status' => $this->getStatus(),
             ])
             ->execute();
@@ -84,7 +94,7 @@ class GroupInvitation extends Model
                 'group_id' => $this->getGroup()->getId(),
                 'user_id' => $this->getUser()->getId(),
                 'token' => $this->getToken(),
-                'expiresAt' => $this->getExpiresAt(),
+                'expires_at' => $this->getExpiresAt()->format('Y-m-d H:i:s'),
                 'status' => $this->getStatus(),
             ])
             ->where('id', $this->id)

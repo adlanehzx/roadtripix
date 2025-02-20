@@ -27,6 +27,9 @@ include __DIR__ . "/../layout/header.php";
                 <a
                     href="/groups/<?= $group->getId() ?>/users"
                     class="button button--primary button--md">Gérer les utilisateurs 👥⚙️</a>
+                <a
+                    href="/invite/<?= $group->getId() ?>"
+                    class="button button--primary button--md">Inviter des membres 📩</a>
             <?php endif; ?>
 
             <h2><em>Les images du groupe :</em></h2>

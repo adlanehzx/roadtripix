@@ -17,7 +17,7 @@ class GroupInvitationFactory
             ->setGroup(Group::find($data['group_id']))
             ->setUser(User::find($data['user_id']))
             ->setToken($data['token'])
-            ->setExpiresAt($data['expiresAt'])
+            ->setExpiresAt(\DateTime::createFromFormat('Y-m-d H:i:s', $data['expires_at']))
             ->setStatus($data['status']);
 
 
