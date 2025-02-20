@@ -33,15 +33,26 @@ include __DIR__ . "/../layout/header.php";
         <?php endforeach; ?>
     </ul>
     <h2><em>Les images du groupe :</em></h2>
-    <ul>
-        <?php foreach ($groupImages as $image): ?>
-            <li>
-                <a href="<?= $image->getImageUrl() ?>"><em><?= $image->getDescription() ?></em></a> - <strong>uploadé par</strong> <em> <?= $image->getUser()->getUsername() ?></em> <strong>le</strong> <em><?= $image->getUploadedAt() ?></em>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+        <div class="gallery">
+            <?php foreach ($groupImages as $image): ?>
+                <div class="gallery__item" onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>')">
+                        <img src="<?= $image->getImageUrl() ?>" alt="<?= $image->getDescription() ?>">
+                </div>
+            <?php endforeach; ?>
+        </div>
+        
+        <div id="imageModal" class="modal" onclick="closeModal()">
+            <div class="modal__content" onclick="event.stopPropagation();">
+                <img id="modalImage" src="" alt="Image agrandie">
+                <p id="modalDescription"></p>
+                <button class="close" onclick="closeModal()">Fermer</button>
+                <a class="button button--danger" href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
+                
+            </div>
+        </div>
 
-    <h2><em>Ajouter une images :</em></h2>
+
+    <h2><em>Ajouter une image :</em></h2>
     <a class="button button--primary button--md" href="/images/<?= $group->getId() ?>/create">Ajouter une image</a>
 
     <h2><em>Supprimer le groupe</em></h2>

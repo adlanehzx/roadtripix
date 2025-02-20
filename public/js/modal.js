@@ -1,4 +1,4 @@
-function openModal(imageUrl, description) {
+window.openModal = function (imageUrl, description) {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
   const modalDesc = document.getElementById("modalDescription");
@@ -6,8 +6,8 @@ function openModal(imageUrl, description) {
   modalImg.src = imageUrl;
   modalDesc.textContent = description;
   modal.classList.add("show");
-}
+};
 
-function closeModal() {
+window.closeModal = function () {
   document.getElementById("imageModal").classList.remove("show");
-}
+};
