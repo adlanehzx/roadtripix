@@ -59,5 +59,8 @@
         background-color: var(--white);
       }
     }
+    &--no-show {
+      display: none;
+    }
   }
 }

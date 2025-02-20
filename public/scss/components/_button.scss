@@ -46,5 +46,10 @@
       padding: f.rem(8) f.rem(12);
       font-size: f.rem(14);
     }
+    &--left {
+      display: block;
+      text-align: left;
+      margin-left: 0;
+    }
   }
 }
