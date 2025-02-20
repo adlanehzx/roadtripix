@@ -122,7 +122,7 @@ class ImageController extends Controller
             return $this->render('errors/404', ['errors' => 'Le groupe ou la photo n\'exsite pas']);
         }
 
-        if ($this->user->belongsTo($group)) {
+        if (!$this->user->belongsTo($group)) {
             return $this->render('errors/401', ['errors' => 'Tu n\'appartiens pas au groupe']);
         }
 

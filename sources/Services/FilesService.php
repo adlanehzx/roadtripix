@@ -6,9 +6,6 @@ use App\Models\Image;
 
 class FilesService
 {
-
-    private ?string $imagesFolderName = 'user_images';
-
     public function uploadImage(array $file, Image $image): bool
     {
         $destination = $this->getImageDirectoryAbsolutePath($image);
@@ -37,7 +34,7 @@ class FilesService
         if (empty($image)) {
             return null;
         }
-        return $_ENV['PHP_USER_HOME_DIRECTORY'] . "/user_images/user_uploads/" . $image->getGroup()->getId() . '/' . $image->getId();
+        return $_ENV['PHP_USER_HOME_DIRECTORY'] . "/user_uploads/" . $image->getGroup()->getId() . '/' . $image->getId();
     }
 
     public function getImageDirectoryAbsolutePath(?Image $image): ?string
@@ -45,6 +42,6 @@ class FilesService
         if (empty($image)) {
             return null;
         }
-        return $_ENV['PHP_USER_HOME_DIRECTORY'] . '/' . $this->imagesFolderName . "/user_uploads/" . $image->getGroup()->getId();
+        return $_ENV['PHP_USER_HOME_DIRECTORY'] . "/user_uploads/" . $image->getGroup()->getId();
     }
 }
