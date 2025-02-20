@@ -23,6 +23,11 @@ class Group extends Model
         $this->addUserWithPermission($user, GroupPermission::memberPermission());
     }
 
+    public function addMemberRo(User $user): void
+    {
+        $this->addUserWithPermission($user, GroupPermission::memberReadOnlyPermission());
+    }
+
     private function addUserWithPermission(User $user, GroupPermission $permission): void
     {
         if ($this->userHasPermission($user, $permission)) {
@@ -30,18 +35,17 @@ class Group extends Model
         }
 
         $qb = new QueryBuilder();
-        $qb->insert('user_group_permissions', [
-            'user_id' => $user->getId(),
-            'group_id' => $this->getId(),
-            'permission_id' => $permission->getId(),
-        ])
+        $qb
+            ->insert('user_group_permissions', [
+                'user_id' => $user->getId(),
+                'group_id' => $this->getId(),
+                'permission_id' => $permission->getId(),
+            ])
             ->execute();
     }
 
-    /**
-     * @return User[]
-     */
-    public function getGroupUsers(): array
+
+    public function getGroupUsersOld(): array
     {
         $qb = new QueryBuilder();
         $result = $qb->select([
@@ -58,6 +62,29 @@ class Group extends Model
             ->join('user_group_permissions ugp', 'ugp.group_id', 'g.id')
             ->join('users u', 'ugp.user_id', 'u.id')
             ->where('g.id', $this->getId())
+            ->fetchAll();
+        $users = [];
+
+        foreach ($result as $data) {
+            $users[] = UserFactory::createFromDatabase($data);
+        }
+
+        return $users;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getGroupUsers(): array
+    {
+        $qb = new QueryBuilder();
+        $result = $qb->select([
+            'u.*'
+        ])
+            ->from('user_group_permissions ugp')
+            ->join('users u', 'ugp.user_id', 'u.id')
+            ->where('ugp.group_id', $this->getId())
+            ->groupBy('u.id')
             ->fetchAll();
         $users = [];
 
@@ -222,7 +249,7 @@ class Group extends Model
     #region getters non-generic
 
     /**
-     * @return null|GroupPermissions[]
+     * @return GroupPermissions[]
      */
     public function getUserPermissions(User $user): ?array
     {
@@ -303,5 +330,69 @@ class Group extends Model
         return $owner;
     }
 
+    public function removeMember(?User $user)
+    {
+        if (empty($user)) {
+            return;
+        }
+
+        $qb = new QueryBuilder();
+
+        $qb
+            ->delete('user_group_permissions')
+            ->where('user_group_permissions.user_id', $user->getId())
+            ->where('user_group_permissions.group_id', $this->getId())
+            ->execute();
+    }
+
+    public function userHasRoOnly(?User $user): bool
+    {
+        if (empty($user)) {
+            return false;
+        }
+
+        if (!$user->belongsTo($this)) {
+            return false;
+        }
+
+        $userPerms = $this->getUserPermissions($user);
+
+        if (count($userPerms) > 1 || count($userPerms) === 0) {
+            return false;
+        }
+
+        return $userPerms[0]->isSame(GroupPermission::memberReadOnlyPermission());
+    }
+
+    public function userHasWriteAcces(?User $user): bool
+    {
+        return $user->belongsTo($this) && !$this->userHasRoOnly($user);
+    }
+
+    public function addWriteAccess(?User $user)
+    {
+        $this->addMember($user);
+        return;
+    }
+
+    public function removeWriteAccess(?User $user)
+    {
+        if (empty($user)) {
+            return;
+        }
+
+        if (!$this->userHasWriteAcces($user)) {
+            return;
+        }
+
+        $qb = new QueryBuilder();
+
+        $qb
+            ->delete('user_group_permissions')
+            ->where('user_group_permissions.user_id', $user->getId())
+            ->where('user_group_permissions.group_id', $this->getId())
+            ->where('user_group_permissions.permission_id', GroupPermission::MEMBER_PERMISSION_ID)
+            ->execute();
+    }
     #endregion
 }

@@ -86,6 +86,33 @@ class User extends Model
     return $userGroups;
   }
 
+  public function getUserGroupsNew(): array
+  {
+    $qb = new QueryBuilder();
+    $result = $qb
+      ->select(['g.*'])
+      ->from('user_group_permissions ugp', 'u.id', 'ugp.user_id', 'INNER')
+      ->join('groups g', 'g.id', 'ugp.group_id')
+      ->where('ugp.user_id', (int) $this->getId())
+      ->groupBy('g.id')
+      ->fetchAll();
+
+    if (empty($result)) {
+      return [];
+    }
+
+    $userGroups = [];
+
+    foreach ($result as $data) {
+      $userGroups[] = (new Group())
+        ->setId($data['id'])
+        ->setName($data['name'])
+        ->setCreatedAt((new \DateTime($data['created_at']))->format('Y-m-d H:i:s'));
+    }
+
+    return $userGroups;
+  }
+
   /**
    * @return Images[]
    */

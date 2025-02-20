@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Requests\GroupRequest;
 
 use App\Models\Group;
+use App\Models\User;
 
 class GroupController extends Controller
 {
@@ -29,7 +30,7 @@ class GroupController extends Controller
     $groupUsers = $group->getGroupUsers();
 
     return $this->render('groups/index', [
-      'currentUser' => $this->user,
+      'loggedUser' => $this->user,
       'group' => $group,
       'groupUsers' => $groupUsers,
       'groupImages' => $groupImages,
@@ -103,7 +104,98 @@ class GroupController extends Controller
     return $this->redirect('/');
   }
 
+  public function groupUsers(int $groupId)
+  {
+    $group = Group::find($groupId);
+
+    if (empty($group)) {
+      return $this->render('errors/404', ['errors' => 'Le groupe n\'existe pas !']);
+    }
 
 
-  public function groupUsers(int $groupId) {}
+    if (!$this->user->owns($group)) {
+      return $this->render('errors/401', ['errors' => 'Tu n\'es pas autorisé pour effectuer cette action']);
+    }
+
+    $groupUsers = $group->getGroupUsers();
+
+    return $this->render('groups/users', [
+      'loggedUser' => $this->user,
+      'group' => $group,
+      'groupUsers' => $groupUsers
+    ]);
+  }
+
+  public function removeUserFromGroup(int $groupId, int $userId)
+  {
+    $group = Group::find($groupId);
+
+    if (empty($group)) {
+      return $this->render('errors/404', ['errors' => 'Le groupe n\'existe pas !']);
+    }
+
+    $user = User::find($userId);
+
+    if (empty($user)) {
+      return $this->render('errors/404', ['errors' => 'L\'utilisateur n\'existe pas !']);
+    }
+
+    if (!$user->belongsTo($group)) {
+      return $this->render('errors/404', ['errors' => "L'utilisateur n'appartient pas au groupe."]);
+    }
+
+    $group->removeMember($user);
+
+    $groupUsers = $group->getGroupUsers();
+
+    return $this->render('groups/users', [
+      'group' => $group,
+      'groupUsers' => $groupUsers,
+      'success' => "Utilisateur enlevé avec succès."
+    ]);
+  }
+
+  public function giveWriteAccess(int $groupId, int $userId)
+  {
+    $group = Group::find($groupId);
+
+    $user = User::find($userId);
+
+    if (!$this->user->owns($group)) {
+      return $this->render('errors/401', ['errors' => 'Tu n\'es pas autorisé pour effectuer cette action']);
+    }
+
+    $group->addWriteAccess($user);
+
+    $groupUsers = $group->getGroupUsers();
+
+    return $this->render('groups/users', [
+      'group' => $group,
+      'groupUsers' => $groupUsers,
+      'success' => "L'utilisateur a un accès en écriture."
+    ]);
+  }
+
+  public function deleteWriteAccess(int $groupId, int $userId)
+  {
+    $group = Group::find($groupId);
+
+    $user = User::find($userId);
+
+    if (!$this->user->owns($group)) {
+      return $this->render('errors/401', ['errors' => 'Tu n\'es pas autorisé pour effectuer cette action']);
+    }
+
+    $group->removeWriteAccess($user);
+
+    $groupUsers = $group->getGroupUsers();
+
+
+
+    return $this->render('groups/users', [
+      'group' => $group,
+      'groupUsers' => $groupUsers,
+      'success' => "L'utilisateur a un accès en lecture seule."
+    ]);
+  }
 }
