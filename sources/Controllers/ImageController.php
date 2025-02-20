@@ -82,7 +82,7 @@ class ImageController extends Controller
 
         $image->save();
 
-        return $this->redirect("/group/{$groupId}");
+        return $this->redirect("/groups/{$groupId}");
     }
 
     public function deleteForm(int $groupId, int $imageId)

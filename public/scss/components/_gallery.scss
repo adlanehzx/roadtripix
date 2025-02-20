@@ -4,14 +4,15 @@
 @layer components {
   .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(f.rem(150), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(f.rem(150), max-content));
     gap: f.rem(10);
     margin-top: f.rem(20);
 
     &__item {
       position: relative;
       cursor: pointer;
-      width: f.rem(136);
+      width: f.rem(150);
+      max-width: 100%;
       overflow: hidden;
       border-radius: f.rem(8);
       box-shadow: 0 f.rem(2) f.rem(10) rgba(0, 0, 0, 0.1);
