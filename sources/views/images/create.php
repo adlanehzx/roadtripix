@@ -2,7 +2,7 @@
 $title = 'Créer une image';
 include __DIR__ . "/../layout/header.php";
 ?>
-<div class="Container">
+<div class="Container container--center">
     <h1><em>Créer une image</em></h1>
 
     <form class="input_container" action="/images/<?= $groupId ?>" method="post" enctype="multipart/form-data">

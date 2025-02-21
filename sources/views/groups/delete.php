@@ -2,7 +2,7 @@
 $title = 'Delete Group';
 include __DIR__ . "/../layout/header.php";
 ?>
-<div class="container">
+<div class="container container--center">
     <form id="deleteForm" action="/groups/<?php echo htmlspecialchars($groupId); ?>/delete" method="post">
         <input type="hidden" name="_method" value="DELETE">
         <p>Are you sure you want to delete this group?</p>

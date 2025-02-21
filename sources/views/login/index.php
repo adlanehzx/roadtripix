@@ -3,8 +3,7 @@ $title = "Login";
 include __DIR__ . "/../layout/header.php";
 ?>
 
-
-<div class="container">
+<div class="container container--center">
     <h1>Login</h1>
     <form action="/login" method="POST">
         <div class="input-container">
@@ -33,10 +32,11 @@ include __DIR__ . "/../layout/header.php";
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>
+        <div class="login-btn">
 
-        <button class="button button--primary button--md" type="submit">Login</button>
-        <a class="button button--primary button--md" href="/reset-password">Reset Password</button>
+            <button class="button button-primary button-md button-center" type="submit">Login</button>
+            <a class="button button-primary button-md" href="/reset-password">Reset Password</a>
 
+        </div>
     </form>
-
 </div>

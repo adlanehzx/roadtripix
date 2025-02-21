@@ -1,36 +1,38 @@
-<style>
-    .success {
-        color: green;
-    }
-</style>
-
-<?php $title = 'Home';
+<?php 
+$title = 'Home';
 include __DIR__ . "/../layout/header.php";
 ?>
-<div class= "container"> 
-<h1>Welcome home</h1>
 
-<p>logged in as <strong><em> <?= $username ?></em></strong> </p>
+<div class="container container--center">
+    <h1>Welcome home</h1>
 
-<h2 >créer un groupe</h2>
+    <p><strong><em> <?= htmlspecialchars($username) ?></em></strong></p>
 
-<a class= "button button--primary button--md" href="/groups/create">Créer un groupe</a>
+    <h2>Créer un groupe</h2>
 
-<h2>Les groupes dont tu es membre :</h2>
-<ul>
-    <?php foreach ($groups as $group): ?>
-        <li class="card card--group-preview">
-            Nom : <em><?= htmlspecialchars($group->getName()) ?></em>
-            son ID : <em><?= htmlspecialchars($group->getId()) ?></em>
-            crée le : <em><?= htmlspecialchars($group->getCreatedAt()) ?></em>
-            <strong>par</strong> <?= $group->getOwner()->getUsername() ?>
-            - <a class= "button button--primary button--md" href="/groups/<?= $group->getId() ?>">lien au groupe</a>
-        </li>
-    <?php endforeach; ?>
-</ul>
+    <a class="button button-primary button-md" href="/groups/create">Créer un groupe</a>
 
-<?php if (isset($success)): ?>
-    <p class="success"><?= htmlspecialchars($success) ?></p>
-<?php endif; ?>
+    <h2>Les groupes dont tu es membre :</h2>
+    <?php if (empty($groups)): ?>
+    <p>Tu n'es membre d'aucun groupe pour le moment.</p>
+    <?php endif; ?>
+
+    <div class="card-container">
+        <?php foreach ($groups as $group): ?>
+        <div class="card card--group-preview">
+            <div class="card-header">
+                <h3><?= htmlspecialchars($group->getName()) ?></h3>
+                <p class="group-id">ID : <strong><?= htmlspecialchars($group->getId()) ?></strong></p>
+            </div>
+            <div class="card-body">
+                <p><strong>Créé le :</strong> <em><?= htmlspecialchars($group->getCreatedAt()) ?></em></p>
+                <p><strong>Propriétaire :</strong> <?= htmlspecialchars($group->getOwner()->getUsername()) ?></p>
+            </div>
+            <div class="card-footer">
+                <a class="button button-primary button-md" href="/groups/<?= $group->getId() ?>">Voir le groupe</a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
 
 </div>
