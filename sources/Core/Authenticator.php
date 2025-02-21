@@ -9,6 +9,7 @@ class Authenticator
     public static function init()
     {
         if (session_status() === PHP_SESSION_NONE) {
+            ini_set('session.gc_maxlifetime', 3600);
             session_start();
         }
     }

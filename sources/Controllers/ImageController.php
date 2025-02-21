@@ -6,16 +6,20 @@ use App\Requests\ImageRequest;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Group;
+
 use App\Services\FilesService;
+use App\Services\Validator\ImageValidator;
 
 class ImageController extends Controller
 {
     private ?FilesService $filesService = null;
+    private ?ImageValidator $imageValidator = null;
 
     public function __construct()
     {
         parent::__construct();
         $this->filesService = new FilesService();
+        $this->imageValidator = new ImageValidator();
     }
 
     public function index(int $groupId) {}
@@ -60,7 +64,19 @@ class ImageController extends Controller
         $request = new ImageRequest();
 
         if (!$request->validate()) {
-            return $this->render('images/create', ['errors' => 'Y a eu une erreur avec les données']);
+            return $this->render('images/create', [
+                'groupId' => $groupId,
+                'errors' => 'Y a eu une erreur avec les données'
+            ]);
+        }
+
+        $validated = $this->imageValidator->validate($request->image_file);
+
+        if (!$validated) {
+            return $this->render('images/create', [
+                'groupId' => $groupId,
+                'errors' => "Le type du fichier non supporté ou la taille maximale est dépassée."
+            ]);
         }
 
         $image = new Image();
@@ -77,7 +93,10 @@ class ImageController extends Controller
                 image: $image
             )
         ) {
-            return $this->render('images/create', ['errors' => 'Erreur lors du déplacement de l\'image téléchargée']);
+            return $this->render('images/create', [
+                'groupId' => $groupId,
+                'errors' => 'Erreur lors du déplacement de l\'image téléchargée'
+            ]);
         }
 
         $image->save();
@@ -95,7 +114,9 @@ class ImageController extends Controller
             || !$image
             || !$image?->belongsTo($group)
         ) {
-            return $this->render('errors/404', ['errors' => 'Le groupe ou la photo n\'exsite pas']);
+            return $this->render('errors/404', [
+                'errors' => 'Le groupe ou la photo n\'exsite pas'
+            ]);
         }
 
         return $this->render(

@@ -5,10 +5,16 @@ namespace App\Controllers;
 use App\Core\Authenticator;
 use App\Models\User;
 use App\Requests\LoginRequest;
+use App\Services\Validator\UserValidator;
 
 class LoginController extends Controller
 {
-  public function __construct() {}
+  private ?UserValidator $userValidator = null;
+
+  public function __construct()
+  {
+    $this->userValidator = new UserValidator();
+  }
 
   public function index()
   {
@@ -18,18 +24,17 @@ class LoginController extends Controller
   public function post()
   {
     $request = new LoginRequest();
-    $user = User::findOneByEmail(email: $request->email);
+    $errors = $this->userValidator->validateLogin($request);
 
-
-
-    if (!$user) {
-      echo "L'adresse email ou le mot de passe sont incorrects.";
-      die();
+    if (!empty($errors)) {
+      return $this->render('login/index', ['errors' => $errors]);
     }
 
-    if (!$user->isValidPassword($request->password)) {
-      echo "L'adresse email ou le mot de passe sont incorrects.";
-      die();
+    $user = User::findOneByEmail(email: $request->email);
+
+    if (!$user || !$user->isValidPassword($request->password)) {
+      $errors['email'][] = "L'adresse email ou le mot de passe sont incorrects.";
+      return $this->render('login/index', ['errors' => $errors]);
     }
 
     Authenticator::login($user);
