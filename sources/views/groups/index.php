@@ -99,7 +99,7 @@ include __DIR__ . "/../layout/header.php";
 </body>
 
 
-<script>
+<script defer>
     function shareImage(imageId) {
         fetch(`/external-images/create/${imageId}`, {
                 method: 'POST',
