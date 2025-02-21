@@ -1,0 +1,72 @@
+@use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
+@layer components {
+  .user-management-table {
+    margin-top: f.rem(30);
+    width: 100%;
+    max-width: f.rem(1200);
+    margin: 0 auto;
+    padding: f.rem(20);
+    border-radius: f.rem(12);
+    box-shadow: 0 f.rem(4) f.rem(10) var(--shadow-color);
+    overflow-x: auto;
+    display: block;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "Arial", sans-serif;
+      border-radius: f.rem(12);
+      overflow: hidden;
+      min-width: f.rem(600);
+    }
+
+    thead {
+      background-color: var(--primary-500);
+      color: var(--white);
+      text-align: left;
+
+      th {
+        padding: f.rem(12);
+        font-size: f.rem(16);
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+    }
+
+    tbody {
+      tr {
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: var(--grey-300);
+        }
+
+        td {
+          padding: f.rem(12);
+          font-size: f.rem(14);
+          color: var(--text-color-900);
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: f.rem(10);
+
+      table {
+        min-width: 100%;
+      }
+
+      thead th {
+        font-size: f.rem(14);
+        padding: f.rem(10);
+      }
+
+      tbody td {
+        font-size: f.rem(12);
+        padding: f.rem(8);
+      }
+    }
+  }
+}

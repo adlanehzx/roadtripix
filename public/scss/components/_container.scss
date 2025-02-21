@@ -10,7 +10,6 @@
 
   .container {
     width: 100%;
-
     margin: 0 2rem;
     background-color: var(--backgroundC-200);
     color: var(--text-color-700);
@@ -25,7 +24,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 90vh;
+      min-height: 100vh;
       margin: auto;
       padding: 2rem;
     }

@@ -1,0 +1,50 @@
+@use "../partials/functions" as f;
+
+@layer components {
+  .alert {
+    width: 100%;
+    max-width: f.rem(400);
+    margin: f.rem(10) auto;
+    padding: f.rem(12);
+    border-radius: f.rem(6);
+    font-size: f.rem(14);
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: f.rem(8);
+    box-shadow: 0 f.rem(2) f.rem(6) var(--shadow-color);
+    transition: all 0.3s ease-in-out;
+
+    &--success {
+      background-color: var(--green-100);
+      color: var(--green-700);
+      border: f.rem(1) solid var(--green-500);
+    }
+
+    &--error {
+      background-color: var(--red-100);
+      color: var(--red-700);
+      border: f.rem(1) solid var(--red-500);
+    }
+
+    &--warning {
+      background-color: var(--yellow-100);
+      color: var(--yellow-700);
+      border: f.rem(1) solid var(--yellow-500);
+    }
+
+    &--info {
+      background-color: var(--blue-100);
+      color: var(--blue-700);
+      border: f.rem(1) solid var(--blue-500);
+    }
+
+    @media (min-width: f.rem(768)) {
+      font-size: f.rem(16);
+      padding: f.rem(14);
+      max-width: f.rem(600);
+    }
+  }
+}

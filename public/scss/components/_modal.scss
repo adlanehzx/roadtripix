@@ -86,5 +86,51 @@
         }
       }
     }
+
+    @media (min-width: 768px) {
+      &__content {
+        max-width: f.rem(600);
+
+        &__image img {
+          max-height: 60vh;
+        }
+
+        &__info {
+          padding: f.rem(15);
+
+          p {
+            font-size: f.rem(14);
+          }
+
+          .buttons {
+            flex-direction: row;
+            gap: f.rem(10);
+          }
+        }
+      }
+    }
+
+    @media (min-width: 1024px) {
+      &__content {
+        max-width: f.rem(800);
+
+        &__image img {
+          max-height: 70vh;
+        }
+
+        &__info {
+          padding: f.rem(20);
+
+          p {
+            font-size: f.rem(16);
+          }
+
+          .close {
+            font-size: f.rem(16);
+            padding: f.rem(8) f.rem(16);
+          }
+        }
+      }
+    }
   }
 }

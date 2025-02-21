@@ -55,9 +55,11 @@ include __DIR__ . "/../layout/header.php";
                             <div class="buttons">
                                 <button class="button button--primary close" onclick="closeModal()">Fermer</button>
                                 <?php if ($image->ownedBy($loggedUser) || $loggedUser->owns($group)): ?>
-                                    <a id="deleteImageBtn" class="button button--danger" href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
+                                    <a id="deleteImageBtn" class="button button--danger"
+                                        href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
                                 <?php endif; ?>
-                                <button class="button button--primary" onclick="shareImage(<?= $image->getId() ?>);">Partager</button>
+                                <button id="share-button" class="button button--primary"
+                                    onclick="">Partager</button>
                             </div>
                         </div>
                     </div>
@@ -78,6 +80,21 @@ include __DIR__ . "/../layout/header.php";
             <?php endif; ?>
 
         </section>
+
+
+        <?php if (!empty($errors)) : ?>
+            <div class="alert alert-danger">
+                <?php if (is_array($errors)) : ?>
+                    <ul>
+                        <?php foreach ($errors as $error) : ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else : ?>
+                    <?= htmlspecialchars($errors) ?>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </body>
 
@@ -102,5 +119,7 @@ include __DIR__ . "/../layout/header.php";
             .catch(error => console.error('Error:', error));
     }
 </script>
+
+
 
 </html>
