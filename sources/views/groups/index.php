@@ -33,10 +33,10 @@ include __DIR__ . "/../layout/header.php";
             <?php endif; ?>
 
             <h2><em>Les images du groupe :</em></h2>
-            <?php if (empty($groupImages)): ?>
-                <p>Aucune image pour le moment.</p>
-            <?php endif; ?>
             <div class="gallery">
+                <?php if (empty($groupImages)): ?>
+                    <p>Aucune image pour le moment.</p>
+                <?php endif; ?>
                 <?php foreach ($groupImages as $image): ?>
                     <article class="gallery__item"
                         onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>', '<?= $image->getId() ?>' , '<?= $group->getId() ?>')">
@@ -44,24 +44,25 @@ include __DIR__ . "/../layout/header.php";
                     </article>
                 <?php endforeach; ?>
             </div>
-
-            <div id="imageModal" class="modal" onclick="closeModal()">
-                <div class="modal__content" onclick="event.stopPropagation();">
-                    <div class="modal__content__image">
-                        <img id="modalImage" src="" alt="Image agrandie">
-                    </div>
-                    <div class="modal__content__info">
-                        <p id="modalDescription"></p>
-                        <div class="buttons">
-                            <button class="button button--primary close" onclick="closeModal()">Fermer</button>
-                            <?php if ($image->ownedBy($loggedUser) || $loggedUser->owns($group)): ?>
-                                <a id="deleteImageBtn" class="button button--danger" href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
-                            <?php endif; ?>
-                            <button class="button button--primary" onclick="shareImage(<?= $image->getId() ?>);">Partager</button>
+            <?php if (!empty($groupImages)): ?>
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <div class="modal__content" onclick="event.stopPropagation();">
+                        <div class="modal__content__image">
+                            <img id="modalImage" src="" alt="Image agrandie">
+                        </div>
+                        <div class="modal__content__info">
+                            <p id="modalDescription"></p>
+                            <div class="buttons">
+                                <button class="button button--primary close" onclick="closeModal()">Fermer</button>
+                                <?php if ($image->ownedBy($loggedUser) || $loggedUser->owns($group)): ?>
+                                    <a id="deleteImageBtn" class="button button--danger" href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
+                                <?php endif; ?>
+                                <button class="button button--primary" onclick="shareImage(<?= $image->getId() ?>);">Partager</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
             <?php if ($group->userHasWriteAcces($loggedUser)): ?>
                 <h2><em>Ajouter une image :</em></h2>
