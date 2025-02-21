@@ -32,10 +32,13 @@
     margin-bottom: f.rem(10);
 
     img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      transition: transform 0.3s ease-in-out;
+      position: relative;
+      cursor: pointer;
+      width: f.rem(150);
+      max-width: 100%;
+      overflow: hidden;
+      border-radius: f.rem(8);
+      box-shadow: 0 f.rem(2) f.rem(10) var(--shadow-color);
     }
 
     &:hover img {
