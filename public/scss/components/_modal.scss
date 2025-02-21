@@ -8,14 +8,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-shadow);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out;
-    padding: f.rem(15);
+    padding: f.rem(20);
     z-index: 1000;
 
     &.show {
@@ -26,8 +26,7 @@
     &__content {
       background: var(--gray-200);
       border-radius: f.rem(10);
-      width: 100%;
-      max-width: f.rem(400);
+      max-width: 90%;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
@@ -42,8 +41,8 @@
         background: var(--black);
 
         img {
-          width: 100%;
-          max-height: 50vh;
+          max-width: 100%;
+          max-height: 75vh;
           object-fit: contain;
           border-top-left-radius: f.rem(10);
           border-top-right-radius: f.rem(10);
@@ -53,7 +52,7 @@
       &__info {
         flex: 1;
         background: var(--gray-200);
-        padding: f.rem(12);
+        padding: f.rem(15);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -62,23 +61,22 @@
         border-bottom-right-radius: f.rem(10);
 
         p {
-          margin-bottom: f.rem(8);
-          font-size: f.rem(12);
+          margin-bottom: f.rem(10);
+          font-size: f.rem(14);
         }
 
         .buttons {
           display: flex;
-          flex-direction: column;
-          gap: f.rem(8);
-          width: 100%;
+          gap: f.rem(10);
+          justify-content: center;
         }
 
         .close {
           cursor: pointer;
-          font-size: f.rem(14);
+          font-size: f.rem(16);
           background: var(--red-500);
           color: var(--white);
-          padding: f.rem(6) f.rem(12);
+          padding: f.rem(5) f.rem(10);
           border-radius: f.rem(5);
           transition: background-color 0.3s ease-in-out;
 

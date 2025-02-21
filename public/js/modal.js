@@ -3,6 +3,7 @@ window.openModal = function (imageUrl, description, imageId, groupId) {
   const modalImg = document.getElementById("modalImage");
   const modalDesc = document.getElementById("modalDescription");
   const deleteImageBtn = document.getElementById("deleteImageBtn");
+  const shareButton = document.getElementById('share-button');
 
   modalImg.src = imageUrl;
   modalDesc.textContent = description;
@@ -10,6 +11,10 @@ window.openModal = function (imageUrl, description, imageId, groupId) {
   modal.classList.add("show");
 
   deleteImageBtn.href = `/images/${groupId}/delete/${imageId}`;
+
+  shareButton.onclick = function () {
+    shareImage(imageId);
+  }
 };
 
 window.closeModal = function () {
