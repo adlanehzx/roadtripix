@@ -12,6 +12,7 @@ use App\Controllers\HomeController;
 use App\Controllers\ImageController;
 use App\Controllers\LogoutController;
 use App\Controllers\ResetPasswordController;
+use App\Controllers\ImageExternalLinkController;
 use App\Models\GroupInvitation;
 
 require_once __DIR__ . "/autoload.php";
@@ -88,6 +89,12 @@ $router->get('/invitation/{token}', GroupInvitationController::class, "acceptInv
 $router->get('/invite/{groupId}', GroupInvitationController::class, "prepareInvitation");
 $router->post('/invite/{groupId}', GroupInvitationController::class, "invite");
 
+
+
+// Image External Links:
+
+$router->get('/external-images/show/{token}', ImageExternalLinkController::class, "showImage");
+$router->post('/external-images/create/{imageId}', ImageExternalLinkController::class, "createLink");
 
 
 
