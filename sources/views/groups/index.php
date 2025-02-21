@@ -39,10 +39,9 @@ include __DIR__ . "/../layout/header.php";
             <div class="gallery">
                 <?php foreach ($groupImages as $image): ?>
                     <div class="gallery__item"
-                        onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>')">
+                        onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>', '<?= $image->getId() ?>' , '<?= $group->getId() ?>')">
                         <img src="<?= $image->getImageUrl() ?>" alt="<?= $image->getDescription() ?>">
                     </div>
-
 
                     <div id="imageModal" class="modal" onclick="closeModal()">
                         <div class="modal__content" onclick="event.stopPropagation();">
@@ -61,7 +60,7 @@ include __DIR__ . "/../layout/header.php";
                                             class="button button--danger"
                                             href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
                                     <?php endif; ?>
-                                    <button class="button button--primary">Partager</button>
+                                    <button class="button button--primary" onclick="shareImage(<?= $image->getId() ?>);">Partager</button>
                                 </div>
                             </div>
 
@@ -84,8 +83,30 @@ include __DIR__ . "/../layout/header.php";
                 <a class="button button--danger button--md" href="/groups/<?= $group->getId() ?>/delete">Delete</a>
             <?php endif; ?>
 
-
+        </section>
     </div>
 </body>
+
+
+<script>
+    function shareImage(imageId) {
+        fetch(`/external-images/create/${imageId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.link) {
+                    navigator.clipboard.writeText(data.link).then(() => {
+                        alert('Le lien genéré est copié dans votre presse-papier : ' + data.link);
+                    }).catch(err => {
+                        alert('Une erreur est survenue ! ' + err);
+                    });
+                } else {
+                    alert('Une erreur est survenue : ', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 
 </html>
