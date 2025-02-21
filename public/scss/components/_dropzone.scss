@@ -11,6 +11,7 @@
     width: 100%;
     max-width: f.rem(400);
     margin: auto;
+    padding: f.rem(10);
   }
 
   .dropzone {
@@ -18,10 +19,10 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: f.rem(300);
-    max-width: 100%;
-    height: f.rem(200);
-    padding: f.rem(20);
+    width: 100%;
+    max-width: f.rem(300);
+    height: f.rem(180);
+    padding: f.rem(15);
     border: f.rem(2) dashed var(--grey-500);
     border-radius: f.rem(8);
     background-color: var(--grey-100);
@@ -29,7 +30,7 @@
     text-align: center;
     cursor: pointer;
     transition: border-color 0.3s, background-color 0.3s;
-    gap: f.rem(10);
+    gap: f.rem(8);
 
     &:hover {
       border-color: var(--blue-500);
@@ -42,18 +43,39 @@
     }
 
     &__icon {
-      font-size: f.rem(40);
+      font-size: f.rem(35);
       color: var(--blue-500);
     }
 
     &__text {
-      font-size: f.rem(18);
+      font-size: f.rem(16);
       font-weight: 600;
     }
   }
 
   .dropzone__preview {
-    font-size: f.rem(14);
+    font-size: f.rem(12);
     color: var(--grey-500);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .dropzone {
+      max-width: f.rem(350);
+      height: f.rem(200);
+      padding: f.rem(20);
+
+      &__icon {
+        font-size: f.rem(40);
+      }
+
+      &__text {
+        font-size: f.rem(18);
+      }
+    }
+
+    .dropzone__preview {
+      font-size: f.rem(14);
+    }
   }
 }

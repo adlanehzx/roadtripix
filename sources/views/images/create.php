@@ -5,9 +5,9 @@ include __DIR__ . "/../layout/header.php";
 <div class="Container container--center">
     <h1><em>Créer une image</em></h1>
     <?php if (!empty($errors)): ?>
-        <div class="alert alert--danger">
-            <?= htmlspecialchars($errors) ?>
-        </div>
+    <div class="alert alert--danger">
+        <?= htmlspecialchars($errors) ?>
+    </div>
     <?php endif; ?>
 
     <form class="input_container" action="/images/<?= $groupId ?>" method="post" enctype="multipart/form-data">
@@ -25,6 +25,24 @@ include __DIR__ . "/../layout/header.php";
 
             <input class="button button--primary button--md" type="submit" value="Create Image">
         </div>
+
+
     </form>
+
+    <?php if (!empty($errors)) : ?>
+    <div class="alert alert-danger">
+        <?php if (is_array($errors)) : ?>
+        <ul>
+            <?php foreach ($errors as $error) : ?>
+            <li><?= htmlspecialchars($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <?php else : ?>
+        <?= htmlspecialchars($errors) ?>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+
+
 
 </div>

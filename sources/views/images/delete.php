@@ -16,4 +16,18 @@ include __DIR__ . "/../layout/header.php";
         <a class="button button--white button--md" href="/">Cancel</a>
     </form>
 
+    <?php if (!empty($errors)) : ?>
+    <div class="alert alert-danger">
+        <?php if (is_array($errors)) : ?>
+        <ul>
+            <?php foreach ($errors as $error) : ?>
+            <li><?= htmlspecialchars($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <?php else : ?>
+        <?= htmlspecialchars($errors) ?>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+
 </div>

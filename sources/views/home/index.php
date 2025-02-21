@@ -10,7 +10,7 @@ include __DIR__ . "/../layout/header.php";
 
     <h2>Créer un groupe</h2>
 
-    <a class="button button-primary button-md" href="/groups/create">Créer un groupe</a>
+    <a class="button button--primary " href="/groups/create">Créer un groupe</a>
 
     <h2>Les groupes dont tu es membre :</h2>
     <?php if (empty($groups)): ?>
@@ -29,10 +29,24 @@ include __DIR__ . "/../layout/header.php";
                 <p><strong>Propriétaire :</strong> <?= htmlspecialchars($group->getOwner()->getUsername()) ?></p>
             </div>
             <div class="card-footer">
-                <a class="button button-primary button-md" href="/groups/<?= $group->getId() ?>">Voir le groupe</a>
+                <a class="button button--primary " href="/groups/<?= $group->getId() ?>">Voir le groupe</a>
             </div>
         </div>
         <?php endforeach; ?>
+
+        <?php if (!empty($errors)) : ?>
+        <div class="alert alert-danger">
+            <?php if (is_array($errors)) : ?>
+            <ul>
+                <?php foreach ($errors as $error) : ?>
+                <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php else : ?>
+            <?= htmlspecialchars($errors) ?>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
     </div>
 
 </div>

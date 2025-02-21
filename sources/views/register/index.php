@@ -12,7 +12,7 @@ include __DIR__ . "/../layout/header.php";
             <h1>S'inscrire</h1>
             <?php if (isset($errors) && is_string($errors)): ?>
 
-                <p class="alert alert--danger"><?= $errors ?></p>
+            <p class="alert alert--danger"><?= $errors ?></p>
             <?php endif; ?>
             <form action="/register" method="POST">
                 <div class="input-container">
@@ -22,11 +22,11 @@ include __DIR__ . "/../layout/header.php";
                         placeholder="Nom d'utilisateur" required>
                 </div>
                 <?php if (!empty($errors['username'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['username'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['username'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
 
                 <div class="input-container">
@@ -36,11 +36,11 @@ include __DIR__ . "/../layout/header.php";
                         required>
                 </div>
                 <?php if (!empty($errors['email'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['email'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['email'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
 
                 <div class="input-container">
@@ -49,11 +49,11 @@ include __DIR__ . "/../layout/header.php";
                         required>
                 </div>
                 <?php if (!empty($errors['password'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['password'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['password'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
 
                 <div class="input-container">
@@ -62,11 +62,11 @@ include __DIR__ . "/../layout/header.php";
                         placeholder="Confirmez le mot de passe" required>
                 </div>
                 <?php if (!empty($errors['passwordConfirm'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['passwordConfirm'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['passwordConfirm'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
 
                 <div class="input-container">
@@ -76,11 +76,11 @@ include __DIR__ . "/../layout/header.php";
                         placeholder="Prénom" required>
                 </div>
                 <?php if (!empty($errors['firstname'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['firstname'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['firstname'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
 
                 <div class="input-container">
@@ -90,11 +90,11 @@ include __DIR__ . "/../layout/header.php";
                         required>
                 </div>
                 <?php if (!empty($errors['lastname'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['lastname'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['lastname'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
 
                 <div class="input-container">
@@ -104,15 +104,15 @@ include __DIR__ . "/../layout/header.php";
                         required>
                 </div>
                 <?php if (!empty($errors['country'])): ?>
-                    <ul class="error-messages">
-                        <?php foreach ($errors['country'] as $message): ?>
-                            <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <ul class="error-messages">
+                    <?php foreach ($errors['country'] as $message): ?>
+                    <li><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <?php endif; ?>
                 <div class="login-btn">
 
-                    <button class="button button-primary button-md " type="submit">S'inscrire</button>
+                    <button class="button button--primary button-md " type="submit">S'inscrire</button>
                 </div>
             </form>
         </div>
