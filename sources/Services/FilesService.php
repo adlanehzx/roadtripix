@@ -21,7 +21,7 @@ class FilesService
 
     public function removeImage(Image $image): bool
     {
-        $imagePath = $image->getImageUrl();
+        $imagePath = $_ENV['PHP_USER_HOME_DIRECTORY'] . $image->getImageUrl();
 
         if (file_exists($imagePath)) {
             return unlink($imagePath);
