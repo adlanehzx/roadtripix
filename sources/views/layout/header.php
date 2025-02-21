@@ -6,8 +6,9 @@
     <script src="/dist/gestion-d-images-php-project.mjs" defer></script>
 </head>
 
-<div class="container--header">
-    <header class="header">
+<body>
+
+    <header class="header container--header">
         <nav class="navbar">
             <div class="navbar__logo">
                 <span class="navbar__logo__text">RoadTriPix *</span>
@@ -24,4 +25,6 @@
 
         </nav>
     </header>
-</div>
+
+
+</body>
