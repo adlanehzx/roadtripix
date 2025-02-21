@@ -15,7 +15,7 @@ class HomeController extends Controller
         return $this->render('home/index', [
             'username' => $this->user->getUsername(),
             'userId' => $this->user->getId(),
-            'groups' => $this->user->getUserGroups()
+            'groups' => $this->user->getUserGroupsNew()
         ]);
     }
 

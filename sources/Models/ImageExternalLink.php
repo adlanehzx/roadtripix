@@ -2,29 +2,38 @@
 
 namespace App\Models;
 
+use App\Services\Factory\ImageExternalLinkFactory;
 
 use App\Core\QueryBuilder;
-use App\Services\Factory\GroupInvitationFactory;
+use PDO;
 
-class GroupInvitation extends Model
+class ImageExternalLink extends Model
 {
-    public const STATUS_PENDING = 'pending';
-    public const STATUS_ACCEPTED = 'accepted';
-
     private ?int $id = null;
-    private Group $group;
-    private User $user;
+    private ?Image $image;
     private ?string $token;
     private ?\DateTime $expiresAt;
-    private ?string $status;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->tableName = 'image_external_link';
+    }
+
+    public function getLink(): ?string
+    {
+        if (empty($token)) {
+            return null;
+        }
+        return "/external-images/show/" . $this->getToken();
+    }
 
     public function isExpired(): bool
     {
         return $this->expiresAt !== null && $this->expiresAt < (new \DateTime());
     }
 
-    public static function getGroupInvitationByToken(?string $token): ?GroupInvitation
+    public static function getImageExternalLinkByToken(?string $token): ?ImageExternalLink
     {
         if (empty($token)) {
             return null;
@@ -32,19 +41,18 @@ class GroupInvitation extends Model
 
         $qb = new QueryBuilder();
 
-        $groupInvitation = $qb
+        $imageExternalLink = $qb
             ->select(['*'])
-            ->from('group_invitations')
+            ->from('image_external_link')
             ->where('token', $token)
             ->fetch();
 
-        if (empty($groupInvitation)) {
+        if (empty($imageExternalLink)) {
             return null;
         }
 
-        return GroupInvitationFactory::createFromDatabase($groupInvitation);
+        return ImageExternalLinkFactory::createFromDatabase($imageExternalLink);
     }
-
 
     protected function persist(): void
     {
@@ -60,17 +68,15 @@ class GroupInvitation extends Model
     {
         $qb = new QueryBuilder();
 
-        $invitationId = $qb
-            ->insert('group_invitations', [
-                'group_id' => $this->getGroup()->getId(),
-                'user_id' => $this->getUser()->getId(),
+        $linkId = $qb
+            ->insert('image_external_link', [
+                'image_id' => $this->getImage()->getId(),
                 'token' => $this->getToken(),
-                'expiresAt' => $this->getExpiresAt(),
-                'status' => $this->getStatus(),
+                'expires_at' => $this->getExpiresAt()->format('Y-m-d H:i:s'),
             ])
             ->execute();
 
-        $this->setId($invitationId);
+        $this->setId($linkId);
 
         return;
     }
@@ -80,18 +86,15 @@ class GroupInvitation extends Model
         $qb = new QueryBuilder();
 
         $qb
-            ->update('group_invitations', [
-                'group_id' => $this->getGroup()->getId(),
-                'user_id' => $this->getUser()->getId(),
+            ->update('image_external_link', [
+                'image_id' => $this->getImage()->getId(),
                 'token' => $this->getToken(),
-                'expiresAt' => $this->getExpiresAt(),
-                'status' => $this->getStatus(),
+                'expires_at' => $this->getExpiresAt()->format('Y-m-d H:i:s'),
             ])
             ->where('id', $this->id)
             ->execute();
         return;
     }
-
 
     #region Getters and Setters
     public function getId(): ?int
@@ -105,25 +108,14 @@ class GroupInvitation extends Model
         return $this;
     }
 
-    public function getGroup(): Group
+    public function getImage(): ?Image
     {
-        return $this->group;
+        return $this->image;
     }
 
-    public function setGroup(Group $group): self
+    public function setImage(?Image $image): self
     {
-        $this->group = $group;
-        return $this;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
+        $this->image = $image;
         return $this;
     }
 
@@ -148,17 +140,7 @@ class GroupInvitation extends Model
         $this->expiresAt = $expiresAt;
         return $this;
     }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): self
-    {
-        $this->status = $status;
-        return $this;
-    }
-
     #endregion
+
+
 }

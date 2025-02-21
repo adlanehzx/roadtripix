@@ -1,43 +1,94 @@
 @use "../partials/functions" as f;
 @use "../partials/mixins" as m;
+
 @layer components {
+  .login-btn {
+    margin-top: f.rem(20);
+    display: flex;
+    justify-content: center;
+  }
   .button {
     @include m.resetA;
     @include m.resetButton;
-    padding: f.rem(10) f.rem(16);
     display: inline-block;
+    padding: f.rem(10) f.rem(16);
     background-color: var(--black);
-    color: var(--white);
+    color: var(--text-color-100);
     border-radius: f.rem(6);
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
     font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin-left: f.rem(10);
+
     &:hover {
       background-color: var(--black-hover);
+      transform: translateY(-2px);
     }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 f.rem(4) rgba(0, 123, 255, 0.5); /* Effet de focus */
+    }
+
     // Modifiers
+
     &--primary {
       background-color: var(--primary-700);
       &:hover {
         background-color: var(--primary-300);
       }
     }
+
     &--secondary {
       background-color: var(--grey-500);
       &:hover {
         background-color: var(--grey-400);
       }
     }
+
     &--danger {
       background-color: var(--red-500);
       &:hover {
-        background-color: var(--red-400);
+        background-color: var(--red-200);
       }
     }
-    &--lg {
-      padding: f.rem(16) f.rem(24);
+
+    &--center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
+    &--white {
+      background-color: var(--white);
+      color: var(--black);
+      &:hover {
+        background-color: var(--grey-400);
+      }
+    }
+
+    // Taille Large
+    &--lg {
+      padding: f.rem(14) f.rem(24);
+      font-size: f.rem(16);
+    }
+
+    // Taille Petite
     &--sm {
       padding: f.rem(8) f.rem(12);
+      font-size: f.rem(14);
+    }
+
+    &--left {
+      display: block;
+      text-align: left;
+      margin-left: 0;
+      width: 100%;
+    }
+
+    @media (max-width: 576px) {
+      padding: f.rem(8) f.rem(14);
       font-size: f.rem(14);
     }
   }

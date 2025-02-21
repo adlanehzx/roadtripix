@@ -13,38 +13,93 @@ include __DIR__ . "/../layout/header.php";
 ?>
 
 <body>
-    <div class="container">
-    <div class="card  ">
-    <h1>L'aperçu d'un groupe</h1>
-    <h2><em>Renseignement du groupe :</em></h2>
-    <p><strong>Nom du groupe: </strong> <?= $group->getName() ?></p>
-    <p><strong>Id du groupe: </strong><?= $group->getId() ?></p>
-    <p><strong>Date de création du groupe:</strong> <?= $group->getCreatedAt() ?></p>
-    </div>
-    <h2><em>Utilisateurs du groupe :</em></h2>
-    <ul>
-        <?php foreach ($groupUsers as $user): ?>
-            <li class="card">
-                <?= $user->getUsername() ?> (<?= $user->getEmail() ?>)
-                <?php if ($user->owns($group)): ?>
-                    <span title='possède le groupe'>👑</span>
-                <?php endif; ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-    <h2><em>Les images du groupe :</em></h2>
-    <ul>
-        <?php foreach ($groupImages as $image): ?>
-            <li>
-                <a href="<?= $image->getImageUrl() ?>"><em><?= $image->getDescription() ?></em></a> - <strong>uploadé par</strong> <em> <?= $image->getUser()->getUsername() ?></em> <strong>le</strong> <em><?= $image->getUploadedAt() ?></em>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <div class="container container--center">
+        <section>
+            <div class="card card--group-preview">
+                <h1 class="card-header">L'aperçu d'un groupe</h1>
+                <div class="card-body">
+                    <h2><em>Renseignement du groupe :</em></h2>
+                    <p><strong>Nom du groupe: </strong> <?= $group->getName() ?></p>
+                    <p><strong>Id du groupe: </strong><?= $group->getId() ?></p>
+                    <p><strong>Date de création du groupe:</strong> <?= $group->getCreatedAt() ?></p>
+                </div>
+            </div>
 
-    <h2><em>Ajouter une images :</em></h2>
-    <a class="button button--primary button--md" href="/images/<?= $group->getId() ?>/create">Ajouter une image</a>
+            <?php if ($loggedUser->owns($group)): ?>
+                <a href="/groups/<?= $group->getId() ?>/users" class="button button--primary button--md">Gérer les
+                    utilisateurs 👥⚙️</a>
+                <a href="/invite/<?= $group->getId() ?>" class="button button--primary button--md">Inviter des membres
+                    📩</a>
+            <?php endif; ?>
 
+            <h2><em>Les images du groupe :</em></h2>
+            <?php if (empty($groupImages)): ?>
+                <p>Aucune image pour le moment.</p>
+            <?php endif; ?>
+            <div class="gallery">
+                <?php foreach ($groupImages as $image): ?>
+                    <article class="gallery__item"
+                        onclick="openModal('<?= $image->getImageUrl() ?>', '<?= $image->getDescription() ?>', '<?= $image->getId() ?>' , '<?= $group->getId() ?>')">
+                        <img src="<?= $image->getImageUrl() ?>" alt="<?= $image->getDescription() ?>">
+                    </article>
+                <?php endforeach; ?>
+            </div>
+
+            <div id="imageModal" class="modal" onclick="closeModal()">
+                <div class="modal__content" onclick="event.stopPropagation();">
+                    <div class="modal__content__image">
+                        <img id="modalImage" src="" alt="Image agrandie">
+                    </div>
+                    <div class="modal__content__info">
+                        <p id="modalDescription"></p>
+                        <div class="buttons">
+                            <button class="button button--primary close" onclick="closeModal()">Fermer</button>
+                            <?php if ($image->ownedBy($loggedUser) || $loggedUser->owns($group)): ?>
+                                <a id="deleteImageBtn" class="button button--danger" href="/images/<?= $group->getId() ?>/delete/<?= $image->getId() ?>">Supprimer</a>
+                            <?php endif; ?>
+                            <button class="button button--primary" onclick="shareImage(<?= $image->getId() ?>);">Partager</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php if ($group->userHasWriteAcces($loggedUser)): ?>
+                <h2><em>Ajouter une image :</em></h2>
+                <a class="button button--primary button--md" href="/images/<?= $group->getId() ?>/create">
+                    Ajouter une image
+                </a>
+            <?php endif; ?>
+
+
+            <?php if ($loggedUser->owns($group)): ?>
+                <h2><em>Supprimer le groupe</em></h2>
+                <a class="button button--danger button--md" href="/groups/<?= $group->getId() ?>/delete">Delete</a>
+            <?php endif; ?>
+
+        </section>
     </div>
 </body>
+
+
+<script>
+    function shareImage(imageId) {
+        fetch(`/external-images/create/${imageId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.link) {
+                    navigator.clipboard.writeText(data.link).then(() => {
+                        alert('Le lien genéré est copié dans votre presse-papier : ' + data.link);
+                    }).catch(err => {
+                        alert('Une erreur est survenue ! ' + err);
+                    });
+                } else {
+                    alert('Une erreur est survenue : ', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 
 </html>

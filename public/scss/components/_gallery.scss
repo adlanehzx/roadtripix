@@ -1,0 +1,32 @@
+@use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
+@layer components {
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(f.rem(150), max-content));
+    gap: f.rem(10);
+    margin-top: f.rem(20);
+
+    &__item {
+      position: relative;
+      cursor: pointer;
+      width: f.rem(150);
+      max-width: 100%;
+      overflow: hidden;
+      border-radius: f.rem(8);
+      box-shadow: 0 f.rem(2) f.rem(10) rgba(0, 0, 0, 0.1);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      &:hover img {
+        transform: scale(1.05);
+      }
+    }
+  }
+}

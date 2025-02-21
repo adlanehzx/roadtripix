@@ -1,0 +1,17 @@
+{
+  "name": "adlane/gestion-d-images-php-project",
+  "autoload": {
+    "psr-4": {
+      "Adlane\\GestionDImagesPhpProject\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "adlane",
+      "email": "adlanehzx@gmail.com"
+    }
+  ],
+  "require": {
+    "resend/resend-php": "^0.15.1"
+  }
+}

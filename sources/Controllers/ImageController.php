@@ -82,7 +82,7 @@ class ImageController extends Controller
 
         $image->save();
 
-        return $this->redirect("/images/{$groupId}/create");
+        return $this->redirect("/groups/{$groupId}");
     }
 
     public function deleteForm(int $groupId, int $imageId)
@@ -122,7 +122,7 @@ class ImageController extends Controller
             return $this->render('errors/404', ['errors' => 'Le groupe ou la photo n\'exsite pas']);
         }
 
-        if ($this->user->belongsTo($group)) {
+        if (!$this->user->belongsTo($group)) {
             return $this->render('errors/401', ['errors' => 'Tu n\'appartiens pas au groupe']);
         }
 
@@ -146,6 +146,6 @@ class ImageController extends Controller
 
         $image->delete();
 
-        return $this->redirect('/');
+        return $this->redirect("/groups/{$groupId}");
     }
 }

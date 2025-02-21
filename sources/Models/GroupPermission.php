@@ -10,9 +10,11 @@ class GroupPermission extends Model
 
     public const OWNER_PERMISSION_NAME = 'owner';
     public const MEMBER_PERMISSION_NAME = 'member';
+    public const MEMBER_RO_PERMISSION_NAME = 'member_ro';
 
     public const OWNER_PERMISSION_ID = 1;
     public const MEMBER_PERMISSION_ID = 2;
+    public const MEMBER_RO_PERMISSION_ID = 3;
 
 
     private $id;
@@ -49,6 +51,11 @@ class GroupPermission extends Model
     public static function memberPermission(): GroupPermission
     {
         return self::findByName(self::MEMBER_PERMISSION_NAME);
+    }
+
+    public static function memberReadOnlyPermission(): GroupPermission
+    {
+        return self::findByName(self::MEMBER_RO_PERMISSION_NAME);
     }
 
     public static function findByName(string $name): ?GroupPermission

@@ -1,21 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
   const dropzone = document.getElementById("dropzone");
-  const fileInput = document.getElementById("fileInput");
+  const fileInput = document.getElementById("image_file");
+  const fileNameDisplay = document.getElementById("file-name");
 
   dropzone.addEventListener("click", () => fileInput.click());
 
   dropzone.addEventListener("dragover", (e) => {
     e.preventDefault();
-    dropzone.classList.add("dropzone--dragging");
+    dropzone.classList.add("dropzone--is-dragging");
   });
 
   dropzone.addEventListener("dragleave", () => {
-    dropzone.classList.remove("dropzone--dragging");
+    dropzone.classList.remove("dropzone--is-dragging");
   });
 
   dropzone.addEventListener("drop", (e) => {
     e.preventDefault();
-    dropzone.classList.remove("dropzone--dragging");
+    dropzone.classList.remove("dropzone--is-dragging");
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
@@ -28,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function handleFiles(files) {
-    alert(`Fichier sélectionné : ${files[0].name}`);
+    if (files.length > 0) {
+      fileNameDisplay.textContent = `Fichier sélectionné : ${files[0].name}`;
+    }
   }
 });
