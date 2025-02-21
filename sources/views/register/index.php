@@ -112,7 +112,7 @@ include __DIR__ . "/../layout/header.php";
                 <?php endif; ?>
                 <div class="login-btn">
 
-                    <button class="button button-primary button-md " type="submit">S'inscrire</button>
+                    <button class="button button--primary button-md " type="submit">S'inscrire</button>
                 </div>
             </form>
         </div>

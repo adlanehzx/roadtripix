@@ -4,72 +4,80 @@
 @layer components {
   .header {
     padding: f.rem(16) 0;
+    width: 100%;
   }
 
   .navbar {
     display: flex;
-
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    max-width: 1200px;
+    width: 100%;
+    max-width: f.rem(1200);
     margin: 0 auto;
     padding: 0 f.rem(16);
+  }
 
-    .navbar__logo {
-      display: flex;
-      align-items: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--neutral-700);
-    }
+  .navbar__logo {
+    display: flex;
+    align-items: center;
+    font-size: f.rem(24);
+    font-weight: bold;
+    color: var(--neutral-700);
 
-    .navbar__logo img {
-      width: 40px;
+    img {
+      width: f.rem(40);
       height: auto;
       margin-right: f.rem(8);
     }
+  }
 
-    .navbar__links {
-      display: flex;
-      gap: f.rem(15);
-      align-items: center;
+  .navbar__links {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(10);
+    align-items: center;
+    width: 100%;
+    padding: f.rem(10);
+  }
+
+  .navbar__link {
+    text-decoration: none;
+    color: var(--neutral-700);
+    font-size: f.rem(16);
+    font-weight: 500;
+    padding: f.rem(8);
+    border-radius: f.rem(4);
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: var(--neutral-100);
+    }
+  }
+
+  .navbar__button {
+    display: block;
+    background: none;
+    border: none;
+    font-size: f.rem(24);
+    cursor: pointer;
+    padding: f.rem(10);
+  }
+
+  @media (min-width: 768px) {
+    .navbar {
+      flex-direction: row;
+      justify-content: space-between;
     }
 
-    .navbar__link {
-      text-decoration: none;
-      color: var(--neutral-700);
-      font-size: 1rem;
-      font-weight: 500;
-      padding: f.rem(8);
-      border-radius: f.rem(4);
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: var(--neutral-100);
-      }
+    .navbar__links {
+      flex-direction: row;
+      gap: f.rem(15);
+      padding: 0;
+      width: auto;
     }
 
     .navbar__button {
       display: none;
-    }
-
-    @media (max-width: f.screen(md)) {
-      .navbar {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .navbar__links {
-        flex-direction: column;
-        gap: f.rem(10);
-      }
-
-      .navbar__button {
-        display: block;
-        background: none;
-        border: none;
-        padding: f.rem(10);
-      }
     }
   }
 }

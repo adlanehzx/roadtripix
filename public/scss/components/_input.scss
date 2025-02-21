@@ -40,21 +40,47 @@
       border-color: var(--green);
     }
 
-    /* Taille large */
     &--lg {
       padding: f.rem(14) f.rem(20);
       font-size: f.rem(16);
     }
 
-    /* Taille petite */
     &--sm {
       padding: f.rem(6) f.rem(10);
       font-size: f.rem(12);
     }
 
-    /* Cache l'input */
     &--no-show {
       display: none;
+    }
+  }
+
+  @media (max-width: f.screen(md)) {
+    .input-container {
+      padding: f.rem(0) f.rem(15);
+      max-width: 100%;
+    }
+
+    .input {
+      font-size: f.rem(12);
+      padding: f.rem(8) f.rem(12);
+    }
+
+    .input--sm {
+      padding: f.rem(6) f.rem(10);
+      font-size: f.rem(10);
+    }
+  }
+
+  @media (min-width: f.screen(md)) {
+    .input-container {
+      padding: f.rem(0) f.rem(30);
+      max-width: f.rem(400);
+    }
+
+    .input {
+      font-size: f.rem(14);
+      padding: f.rem(10) f.rem(14);
     }
   }
 }

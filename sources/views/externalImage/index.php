@@ -4,5 +4,7 @@ include __DIR__ . "/../layout/header.php";
 ?>
 
 <body>
-    <img src="<?= $image->getImageUrl() ?>" alt="<?= $image->getDescription() ?>">
+    <div class="container container--center">
+        <img src="<?= $image->getImageUrl() ?>" alt="<?= $image->getDescription() ?>">
+    </div>
 </body>

@@ -5,12 +5,12 @@
 @layer components {
   .card-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: f.rem(20);
     margin-top: f.rem(30);
 
-    @media (max-width: f.rem(768)) {
-      grid-template-columns: 1fr;
+    @media (min-width: f.rem(768)) {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -23,6 +23,7 @@
     background-color: var(--accent);
     border: f.rem(1) solid var(--grey-300);
     padding: f.rem(20);
+    margin-bottom: f.rem(20);
 
     // Modificateurs
     &--shadow-lg {
@@ -97,6 +98,7 @@
       margin-top: f.rem(20);
     }
   }
+
   .card--group-overview {
     background-color: var(--light-grey);
     padding: f.rem(20);
