@@ -121,8 +121,12 @@ class ResetPasswordController extends Controller
         unset($_SESSION['reset_token_expiration']);
         
         return $this->render('reset/success', ['success' => ['Votre mot de passe a été réinitialisé avec succès.']]);
-        return $this -> redirect('/login');²
+        return $this -> redirect('/login');
+        
+    
     }
+    
+       
     
 }
 ?>

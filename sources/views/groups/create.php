@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    <?php   
+<?php   
     $title = 'Create Group';
     include __DIR__ . "/../layout/header.php";
     ?>
@@ -13,13 +12,15 @@
 </head>
 
 <body>
-    <div class="container">
-    <h1>Create Group</h1>
-    <form class= "input-container" action="/groups" method="POST">
-        <label for="name">Group Name:</label>
-        <input class= "input" type="text" id="name" name="name" required>
-        <button class= "button button--primary button--md" type="submit">Create</button>
-    </form>
+    <div class="container container--center">
+        <h1>Create Group</h1>
+        <form class="input-container" action="/groups" method="POST">
+            <label for="name">Group Name:</label>
+            <input class="input" type="text" id="name" name="name" required>
+            <div class="login-btn">
+                <button class="button button--primary button--md" type="submit">Create</button>
+            </div>
+        </form>
     </div>
 </body>
 

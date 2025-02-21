@@ -8,7 +8,7 @@
 <?php include __DIR__ . "/../layout/header.php"; ?>
 
 <body>
-    <div class="container">
+    <div class="container container--center">
         <h1>Lien expiré</h1>
         <p>Le lien que vous avez utilisé pour réinitialiser votre mot de passe a expiré.</p>
         <p>Veuillez demander un nouveau lien de réinitialisation.</p>

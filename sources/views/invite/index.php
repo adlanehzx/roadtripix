@@ -4,14 +4,14 @@ include __DIR__ . "/../layout/header.php";
 
 <body>
 
-    <div class="container">
+    <div class="container container--center">
 
         <h2>Inviter un membre</h2>
 
         <?php if (isset($errors) && !empty($errors)): ?>
-            <div class="alert alert-danger">
-                <?= htmlspecialchars($errors) ?>
-            </div>
+        <div class="alert alert-danger">
+            <?= htmlspecialchars($errors) ?>
+        </div>
         <?php endif; ?>
 
 
