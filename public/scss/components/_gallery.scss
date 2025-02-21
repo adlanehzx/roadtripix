@@ -28,7 +28,7 @@
     width: 100%;
     overflow: hidden;
     border-radius: f.rem(8);
-    box-shadow: 0 f.rem(2) f.rem(10) rgba(0, 0, 0, 0.1);
+    box-shadow: 0 f.rem(2) f.rem(10) var(--shadow-color);
     margin-bottom: f.rem(10);
 
     img {
