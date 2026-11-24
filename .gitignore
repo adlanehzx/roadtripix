@@ -20,3 +20,13 @@ public/css/
 
 # Vite dev server
 .vite/
+
+# Fichiers d'environnement : seuls les exemples sont versionnés
+.env
+.env.*
+!.env.example
+!.env.*.example
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
